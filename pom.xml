@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>wrappers</module>
-        <module>OrangeHRM</module>
+        <module>automation-builder-autong</module>
+        <module>automation-orangehrm-autong</module>
     </modules>
 
     <properties>
