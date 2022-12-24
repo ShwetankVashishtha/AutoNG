@@ -1,5 +1,6 @@
 package base;
 
+import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.commons.httpclient.util.HttpURLConnection;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Rectangle;
@@ -122,24 +123,25 @@ public class TestBase extends WebDriverTestBase {
     @Override
     public void setUpiOS() throws MalformedURLException {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability("app", "iOS");
         desiredCapabilities.setCapability("platformName", pm.getResourceBundle.getProperty("IOS_PLATFORM_NAME"));
         desiredCapabilities.setCapability("platformVersion", pm.getResourceBundle.getProperty("IOS_PLATFORM_VERSION"));
         desiredCapabilities.setCapability("deviceName", pm.getResourceBundle.getProperty("IOS_DEVICE_NAME"));
+        desiredCapabilities.setCapability("udid", "auto");
+        desiredCapabilities.setCapability(MobileCapabilityType.APP, pm.getResourceBundle.getProperty("APP_FILE"));
+        desiredCapabilities.setCapability(MobileCapabilityType.NO_RESET, true);
         driver = new RemoteWebDriver(new URL("http://127.0.0.1:4723/wd/hub"), desiredCapabilities);
     }
 
     @Override
     public void setUpAndroid(Boolean skipUnlock, Boolean noReset) throws MalformedURLException {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability("browserName", pm.getResourceBundle.getProperty("BROWSER_NAME"));
         desiredCapabilities.setCapability("platformName", pm.getResourceBundle.getProperty("ANDROID_PLATFORM_NAME"));
         desiredCapabilities.setCapability("platformVersion", pm.getResourceBundle.getProperty("ANDROID_PLATFORM_VERSION"));
         desiredCapabilities.setCapability("deviceName", pm.getResourceBundle.getProperty("ANDROID_DEVICE_NAME"));
-        desiredCapabilities.setCapability("noReset", noReset);
-        desiredCapabilities.setCapability("skipUnlock", skipUnlock);
         desiredCapabilities.setCapability("appPackage", pm.getResourceBundle.getProperty("ANDROID_APP_PACKAGE"));
         desiredCapabilities.setCapability("appActivity", pm.getResourceBundle.getProperty("ANDROID_APP_ACTIVITY"));
+        desiredCapabilities.setCapability("noReset", noReset);
+        desiredCapabilities.setCapability("skipUnlock", skipUnlock);
         driver = new RemoteWebDriver(new URL("http://127.0.0.1:4723/wd/hub"), desiredCapabilities);
     }
 
