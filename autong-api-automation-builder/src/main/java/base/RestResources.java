@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.File;
 
-import static io.restassured.RestAssured.given;
 import static base.SpecBuilder.requestSpecs;
 import static base.SpecBuilder.responseSpecs;
+import static io.restassured.RestAssured.given;
 
 /**
  * @author shwetankvashishtha
@@ -24,8 +24,8 @@ public class RestResources {
      * @return Request Specifications
      * @apiNote POST request
      */
-    public static Response post(String username, String password, String path, Object requestBody) {
-        return given(requestSpecs(username, password))
+    public static Response post(String path, Object requestBody) {
+        return given(requestSpecs())
                 .log().all()
                 .body(requestBody)
                 .when()
@@ -41,8 +41,8 @@ public class RestResources {
      * @return Request Specifications
      * @apiNote POST request
      */
-    public static Response post(String username, String password, String path, File requestBody) {
-        return given(requestSpecs(username, password))
+    public static Response post(String path, File requestBody) {
+        return given(requestSpecs())
                 .log().all()
                 .body(requestBody)
                 .when()
@@ -57,8 +57,8 @@ public class RestResources {
      * @return Request Specifications
      * @apiNote GET request
      */
-    public static Response get(String username, String password, String path) {
-        return given(requestSpecs(username, password))
+    public static Response get(String path) {
+        return given(requestSpecs())
                 .when().get(path)
                 .then().spec(responseSpecs())
                 .extract()

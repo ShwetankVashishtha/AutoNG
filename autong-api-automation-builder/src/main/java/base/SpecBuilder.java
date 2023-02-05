@@ -7,10 +7,9 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import utilities.fileOperations.PropertyManager;
 
 import java.util.Map;
-
-import static base.RestAuthenticator.setAuthentication;
 
 /**
  * @author shwetankvashishtha
@@ -20,13 +19,15 @@ import static base.RestAuthenticator.setAuthentication;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SpecBuilder {
 
+    static PropertyManager propertyManager = new PropertyManager();
+
     /**
      * @param headers accepts api request headers
      * @return Request Specifications
      */
-    public static RequestSpecification requestSpecs(Map<String, String> headers, String username, String password) {
+    public static RequestSpecification requestSpecs(Map<String, String> headers) {
         return new RequestSpecBuilder()
-                .setAuth(setAuthentication(username, password))
+                .setBasePath(propertyManager.getResourceBundle.getProperty("BASE_URL"))
                 .setContentType(ContentType.JSON)
                 .addHeaders(headers)
                 .build();
@@ -35,9 +36,9 @@ public class SpecBuilder {
     /**
      * @return Request Specifications
      */
-    public static RequestSpecification requestSpecs(String username, String password) {
+    public static RequestSpecification requestSpecs() {
         return new RequestSpecBuilder()
-                .setAuth(setAuthentication(username, password))
+                .setBasePath(propertyManager.getResourceBundle.getProperty("BASE_URL"))
                 .setContentType(ContentType.JSON)
                 .build();
     }

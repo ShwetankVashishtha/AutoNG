@@ -1,4 +1,4 @@
 package utilities.agileOperations;
 
-public class TestRailConfigs {
+public class testrailConfigs {
 }
