@@ -11,13 +11,13 @@ public class MyInfoSteps {
 
     @And("user redirects to My Info from side nav menu")
     public void clickMyInfoSideNav() {
-        myInfoTests = new MyInfoTests(testBase.getdriver());
+        myInfoTests = new MyInfoTests(testBase.getDriver());
         myInfoTests.clickMyInfoSideNavLink();
     }
 
     @And("user clicks on Add attachment button")
     public void userClicksOnAddAttachmentButton() {
-        myInfoTests = new MyInfoTests(testBase.getdriver());
+        myInfoTests = new MyInfoTests(testBase.getDriver());
         testBase.pause(2000);
         testBase.scrollToBottom();
         myInfoTests.clickAddAttachmentBtn();
@@ -25,7 +25,7 @@ public class MyInfoSteps {
 
     @And("user uploads an attachment successfully")
     public void userUploadsAnAttachmentSuccessfully() {
-        myInfoTests = new MyInfoTests(testBase.getdriver());
+        myInfoTests = new MyInfoTests(testBase.getDriver());
         myInfoTests.uploadAttachment();
     }
 }

@@ -7,6 +7,8 @@ import java.util.Properties;
 
 /**
  * @author shwetankvashishtha
+ * @version 1.0
+ * @since 2022
  */
 public class PropertyManager {
 

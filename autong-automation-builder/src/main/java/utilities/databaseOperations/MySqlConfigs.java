@@ -6,44 +6,24 @@ import java.sql.*;
 
 /**
  * @author shwetankvashishtha
+ * @version 1.0
+ * @since 2022
  */
 public class MySqlConfigs {
 
-    static PropertyManager pm = new PropertyManager();
-    private static Statement stmt;
-    static Connection con;
-    static ResultSet resultSet;
+    static PropertyManager propertyManager = new PropertyManager();
+    static Statement statement;
+    static Connection connection;
 
     public static void writeConfigMySqlDb() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(pm.getResourceBundle.getProperty("MYSQL_DB_URL"),
-                    pm.getResourceBundle.getProperty("MYSQL_DB_USERNAME"),
-                    pm.getResourceBundle.getProperty("MYSQL_DB_PASSWORD"));
-            stmt = con.createStatement();
+            connection = DriverManager.getConnection(propertyManager.getResourceBundle.getProperty("MYSQL_DB_URL"),
+                    propertyManager.getResourceBundle.getProperty("MYSQL_DB_USERNAME"),
+                    propertyManager.getResourceBundle.getProperty("MYSQL_DB_PASSWORD"));
+            statement = connection.createStatement();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public static ResultSet executeQuery(String dbName) {
-        try {
-            stmt.executeUpdate("use " + dbName);
-            resultSet = stmt.executeQuery("SHOW COLUMNS FROM `Roles`  FROM `AutoNG`;");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return resultSet;
-    }
-
-    public static void main(String args[]) throws SQLException {
-        try {
-            writeConfigMySqlDb();
-            executeQuery(pm.getResourceBundle.getProperty("MYSQL_DB_NAME"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            con.close();
         }
     }
 }

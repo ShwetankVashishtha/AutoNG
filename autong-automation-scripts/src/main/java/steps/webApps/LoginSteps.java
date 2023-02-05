@@ -16,25 +16,25 @@ public class LoginSteps {
 
     @Given("user is redirected to login url")
     public void openUrl() throws MalformedURLException {
-        loginTests = new LoginTests(testBase.getdriver());
+        loginTests = new LoginTests(testBase.getDriver());
         loginTests.openUrl();
     }
 
     @When("user enters username {string} and password {string}")
     public void enterCredentials(String username, String password) {
-        loginTests = new LoginTests(testBase.getdriver());
+        loginTests = new LoginTests(testBase.getDriver());
         loginTests.enterCredentials(username, password);
     }
 
     @And("user clicks on login button")
     public void clickLogin() {
-        loginTests = new LoginTests(testBase.getdriver());
+        loginTests = new LoginTests(testBase.getDriver());
         loginTests.clickLogin();
     }
 
     @Then("user should be logged in successfully")
     public void verifyDashboardLogo() {
-        loginTests = new LoginTests(testBase.getdriver());
+        loginTests = new LoginTests(testBase.getDriver());
         loginTests.verifyDashboardLogo();
     }
 }

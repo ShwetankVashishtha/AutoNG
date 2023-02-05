@@ -14,7 +14,7 @@ public abstract class WebDriverTestBase {
 
     protected static WebDriver driver;
 
-    public abstract WebDriver getdriver();
+    public abstract WebDriver getDriver();
 
     public abstract void setupBrowser(String browser, String URL) throws MalformedURLException;
 

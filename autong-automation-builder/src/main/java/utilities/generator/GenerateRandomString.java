@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author shwetankvashishtha
+ * @version 1.0
+ * @since 2022
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GenerateRandomString {

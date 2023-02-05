@@ -6,22 +6,24 @@ import java.sql.*;
 
 /**
  * @author shwetankvashishtha
+ * @version 1.0
+ * @since 2022
  */
 public class PostgreSQLConfigs {
 
-    static PropertyManager pm = new PropertyManager();
-    private static Statement stmt;
-    static Connection con;
+    static PropertyManager propertyManager = new PropertyManager();
+    private static Statement statement;
+    static Connection connection;
     static ResultSet resultSet;
 
     public static void writeConfigPostgresqlDb() {
 
         try {
-            con = DriverManager.getConnection(pm.getResourceBundle.getProperty("POSTGRESQL_DB_URL") + "/"
-                    + pm.getResourceBundle.getProperty("POSTGRESQL_DB_NAME") + "?user="
-                    + pm.getResourceBundle.getProperty("POSTGRESQL_DB_USERNAME") + "&password="
-                    + pm.getResourceBundle.getProperty("POSTGRESQL_DB_PASSWORD"));
-            stmt = con.createStatement();
+            connection = DriverManager.getConnection(propertyManager.getResourceBundle.getProperty("POSTGRESQL_DB_URL") + "/"
+                    + propertyManager.getResourceBundle.getProperty("POSTGRESQL_DB_NAME") + "?user="
+                    + propertyManager.getResourceBundle.getProperty("POSTGRESQL_DB_USERNAME") + "&password="
+                    + propertyManager.getResourceBundle.getProperty("POSTGRESQL_DB_PASSWORD"));
+            statement = connection.createStatement();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -29,18 +31,10 @@ public class PostgreSQLConfigs {
 
     public static ResultSet executeQuery(String dbQuery) {
         try {
-            resultSet = stmt.executeQuery(dbQuery);
+            resultSet = statement.executeQuery(dbQuery);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return resultSet;
-    }
-
-    public static void main(String args[]) {
-        try {
-            writeConfigPostgresqlDb();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

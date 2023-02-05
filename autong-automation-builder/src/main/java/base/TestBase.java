@@ -49,7 +49,7 @@ public class TestBase extends WebDriverTestBase {
     JavascriptExecutor javascriptExecutor;
 
     @Override
-    public WebDriver getdriver() {
+    public WebDriver getDriver() {
         return driver;
     }
 
