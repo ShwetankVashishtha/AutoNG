@@ -7,7 +7,6 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import utilities.fileOperations.PropertyManager;
 
 import java.util.Map;
 
@@ -19,15 +18,13 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SpecBuilder {
 
-    static PropertyManager propertyManager = new PropertyManager();
-
     /**
      * @param headers accepts api request headers
      * @return Request Specifications
      */
     public static RequestSpecification requestSpecs(Map<String, String> headers) {
         return new RequestSpecBuilder()
-                .setBasePath(propertyManager.getResourceBundle.getProperty("BASE_URL"))
+                .setBasePath("")
                 .setContentType(ContentType.JSON)
                 .addHeaders(headers)
                 .build();
@@ -38,7 +35,7 @@ public class SpecBuilder {
      */
     public static RequestSpecification requestSpecs() {
         return new RequestSpecBuilder()
-                .setBasePath(propertyManager.getResourceBundle.getProperty("BASE_URL"))
+                .setBasePath("")
                 .setContentType(ContentType.JSON)
                 .build();
     }
