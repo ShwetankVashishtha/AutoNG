@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>autong-api-automation-builder</module>
-        <module>autong-automation-builder</module>
         <module>autong-automation-scripts</module>
     </modules>
 

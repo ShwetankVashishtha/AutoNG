@@ -7,6 +7,7 @@
         <groupId>test-automation</groupId>
         <artifactId>AutoNG</artifactId>
         <version>1.0</version>
+        <relativePath></relativePath>
     </parent>
 
     <artifactId>autong-automation-scripts</artifactId>
@@ -15,8 +16,6 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<!--        <browser>${browser}</browser>-->
-<!--        <remote>${remote}</remote>-->
     </properties>
 
     <dependencies>

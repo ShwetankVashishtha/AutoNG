@@ -60,6 +60,10 @@ public abstract class WebDriverTestBase {
 
     public abstract void scrollToBottom();
 
+    public abstract void scrollToTop();
+
+    public abstract void javaScriptClick(WebElement element);
+
     public abstract void scrollToElement(WebElement element);
 
     public abstract void scrollUsingCoordinates();

@@ -259,6 +259,18 @@ public class TestBase extends WebDriverTestBase {
     }
 
     @Override
+    public void scrollToTop() {
+        javascriptExecutor = (JavascriptExecutor) driver;
+        javascriptExecutor.executeScript("window.scrollTo(0, -document.body.scrollHeight)");
+    }
+
+    @Override
+    public void javaScriptClick(WebElement element) {
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].click();", element);
+    }
+
+    @Override
     public void scrollUsingCoordinates() {
         javascriptExecutor = (JavascriptExecutor) driver;
         javascriptExecutor.executeScript("window.scrollBy(0,500)");
