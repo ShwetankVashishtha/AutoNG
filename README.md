@@ -1,20 +1,5 @@
 # AutoNG Application Automation Platform
 
-<img src="https://qa-fiction.com/wp-content/uploads/2022/12/Autong-logo-1-scaled.jpg" width="475" height="180" alt="Logo">
-
-[![](https://img.shields.io/badge/AutoNG-Issues-brightgreen)](https://github.com/ShwetankVashishtha/AutoNG/issues)
-[![](https://img.shields.io/badge/AutoNG-Contributors-brightgreen)](https://github.com/ShwetankVashishtha/AutoNG/graphs/contributors) 
-[![](https://img.shields.io/badge/AutoNG-Community-brightgreen)](https://github.com/ShwetankVashishtha/AutoNG/graphs/community) 
-
-
-
-# Introduction
-
-  
-
-<a href='https://www.auto-ng.com/'>AutoNG</a> by <a href='https://qa-fiction.com/'>QA Fiction</a> is an application automation platform, built on top of Java to hassle-free automate complex business applications. AutoNG ensures application end-to-end test automation with seamless integration with devops toolkit.<br> 
-
-  
 
 # Features and Functionalities 
 
@@ -69,13 +54,3 @@ Please walk through corrosponding <a href="https://github.com/ShwetankVashishtha
 # Documentation & Tutorials 
 
 See AutoNG Developer Guide at <a href="https://loom.com/share/folder/d40821f2ef7f418999650dfc1a53e0a9">Loom AutoNG Documentation</a> 
-
-# Blogs and Case Studies 
-
-See <a href="https://qa-fiction.com/blogs/">Blogs</a> and <a href="https://qa-fiction.com/case-studies/">Case Studies</a> by QA Fiction experts on latest trends & technologies  to boost your knowledge.</a>
-
-# Follow QA Fiction 
-
-<img class="" src="https://qa-fiction.com/wp-content/uploads/2022/03/logo.png" width="210" height="62.5"><br> 
-
-Copyright &copy; <a href="https://qa-fiction.com">QA Fiction</a>. All rights reserved. 
