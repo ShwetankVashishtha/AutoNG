@@ -1,6 +1,7 @@
 package base;
 
 import io.appium.java_client.remote.MobileCapabilityType;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.httpclient.util.HttpURLConnection;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Rectangle;
@@ -33,7 +34,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -58,29 +61,22 @@ public class TestBase extends WebDriverTestBase {
         if (System.getProperty("os.name").startsWith("Mac")) {
             if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
                 EdgeOptions edgeOptions = new EdgeOptions();
-                if (pm.getResourceBundle.getProperty("remote").equals("true")) {
-                    driver = new RemoteWebDriver(new URL("http://localhost:4444/"), edgeOptions);
-                } else {
-                    driver = new EdgeDriver();
-                }
+                driver = new EdgeDriver(edgeOptions);
                 driver.manage().window().maximize();
                 openURL(URL);
             } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-                if (pm.getResourceBundle.getProperty("remote").equals("true")) {
-                    driver = new RemoteWebDriver(new URL("http://localhost:4444/"), firefoxOptions);
-                } else {
-                    driver = new FirefoxDriver();
-                }
+                driver = new FirefoxDriver(firefoxOptions);
                 driver.manage().window().maximize();
                 openURL(URL);
             } else if (browser.equalsIgnoreCase("chrome")) {
+                Map<String, Object> pref = new HashMap<>();
+                pref.put("profile.default_content_setting_values.notifications", 2);
                 ChromeOptions chromeOptions = new ChromeOptions();
-                if (pm.getResourceBundle.getProperty("remote").equals("true")) {
-                    driver = new RemoteWebDriver(new URL("http://localhost:4444/"), chromeOptions);
-                } else {
-                    driver = new ChromeDriver();
-                }
+                chromeOptions.addArguments("--remote-allow-origins=*");
+                chromeOptions.setExperimentalOption("prefs", pref);
+                chromeOptions.addArguments("--disable-notifications");
+                driver = new ChromeDriver(chromeOptions);
                 driver.manage().window().maximize();
                 openURL(URL);
             } else if (browser.equalsIgnoreCase("headless") || browser.equalsIgnoreCase("phantomjs")) {
@@ -91,11 +87,7 @@ public class TestBase extends WebDriverTestBase {
                 openURL(URL);
             } else if (browser.equalsIgnoreCase("safari")) {
                 SafariOptions safariOptions = new SafariOptions();
-                if (pm.getResourceBundle.getProperty("remote").equals("true")) {
-                    driver = new RemoteWebDriver(new URL("http://localhost:4444/"), safariOptions);
-                } else {
-                    driver = new SafariDriver();
-                }
+                driver = new SafariDriver(safariOptions);
                 driver.manage().window().maximize();
                 openURL(URL);
             }
@@ -105,11 +97,16 @@ public class TestBase extends WebDriverTestBase {
                 driver.manage().window().maximize();
                 openURL(URL);
             } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
-                driver = new FirefoxDriver();
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                driver = new FirefoxDriver(firefoxOptions);
                 driver.manage().window().maximize();
                 openURL(URL);
             } else if (browser.equalsIgnoreCase("chrome")) {
-                driver = new ChromeDriver();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                WebDriverManager.chromedriver().setup();
+                chromeOptions.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
+                chromeOptions.addArguments("--remote-allow-origins=*");
+                driver = new ChromeDriver(chromeOptions);
                 driver.manage().window().maximize();
                 openURL(URL);
             } else if (browser.equalsIgnoreCase("headless") || browser.equalsIgnoreCase("phantomjs")) {

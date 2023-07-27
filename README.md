@@ -11,7 +11,7 @@
 
   <li>Rest APIs & Micro-Services Test Automation (Rest-Assured) </li> 
 
-  <li>Database Test Automation (MySql, MongoDB, Postgresql) </li> 
+  <li>Database Test Automation (MySql, MongoDB, Postgresql, Azure Storage) </li> 
 
   <li>Cross-Browser/Platform Test Automation </li>
 
@@ -22,6 +22,8 @@
   <li>Behaviour-driven development </li> 
 
   <li>Project Build Tool (Maven or Gradle) </li> 
+
+  <li>QA Framework artefact on JFrog </li>
 
   <li>Remote Execution on Docker Containers </li> 
 

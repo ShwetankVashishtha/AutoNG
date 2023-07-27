@@ -6,37 +6,54 @@
     <parent>
         <groupId>test-automation</groupId>
         <artifactId>AutoNG</artifactId>
-        <version>1.0</version>
-        <relativePath></relativePath>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
+    <groupId>test-automation</groupId>
     <artifactId>autong-automation-scripts</artifactId>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <browser>${browser}</browser>
-        <remote>${remote}</remote>
+<!--        <browser>${browser}</browser>-->
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>test-automation</groupId>
             <artifactId>autong-automation-builder</artifactId>
-            <version>1.0</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>test-automation</groupId>
             <artifactId>autong-api-automation-builder</artifactId>
-            <version>1.0</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <properties>
+                        <property>
+                            <name>junit</name>
+                            <value>true</value>
+                        </property>
+                    </properties>
+                    <includes>
+                        <include>**/*Runner.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
@@ -55,5 +72,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

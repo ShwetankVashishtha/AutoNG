@@ -6,13 +6,12 @@
     <parent>
         <groupId>test-automation</groupId>
         <artifactId>AutoNG</artifactId>
-        <version>1.0</version>
-        <relativePath></relativePath>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>test-automation</groupId>
     <artifactId>autong-api-automation-builder</artifactId>
-    <version>1.0</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
-
 </project>
