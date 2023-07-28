@@ -13,6 +13,8 @@
 
   <li>Database Test Automation (MySql, MongoDB, Postgresql, Azure Storage) </li> 
 
+  <li>Google Suite Integration (Gmail, Hangouts and Maps)</li>
+
   <li>Cross-Browser/Platform Test Automation </li>
 
   <li>Test-driven development </li>
@@ -49,7 +51,7 @@
 
 # Integration with CI/CD 
 
-Please walk through corrosponding <a href="https://github.com/ShwetankVashishtha/qa-ind-fiction-jenkins-dsl-hub/blob/master/AutoNG.dsl">Jenkins DSL</a> written in Groovy to integrate continuous builds with pipeline for your end-to-end tests. 
+Please walk through corresponding <a href="https://github.com/ShwetankVashishtha/DSLs/blob/main/jenkins_autong.dsl">Jenkins DSL</a> written in Groovy to integrate continuous builds with pipeline for your end-to-end tests. 
 
   
 
