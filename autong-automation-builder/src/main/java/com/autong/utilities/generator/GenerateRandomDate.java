@@ -1,4 +1,4 @@
-package utilities.generator;
+package com.autong.utilities.generator;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

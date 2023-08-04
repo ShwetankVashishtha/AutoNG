@@ -1,4 +1,4 @@
-package base;
+package com.autong.base;
 
 import io.restassured.response.Response;
 import lombok.AccessLevel;
@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.File;
 
-import static base.SpecBuilder.requestSpecs;
-import static base.SpecBuilder.responseSpecs;
+import static com.autong.base.SpecBuilder.requestSpecs;
 import static io.restassured.RestAssured.given;
 
 /**
@@ -25,12 +24,12 @@ public class RestResources {
      * @apiNote POST request
      */
     public static Response post(String path, Object requestBody) {
-        return given(requestSpecs())
+        return given(SpecBuilder.requestSpecs())
                 .log().all()
                 .body(requestBody)
                 .when()
                 .post(path)
-                .then().spec(responseSpecs())
+                .then().spec(SpecBuilder.responseSpecs())
                 .extract()
                 .response();
     }
@@ -42,12 +41,12 @@ public class RestResources {
      * @apiNote POST request
      */
     public static Response post(String path, File requestBody) {
-        return given(requestSpecs())
+        return given(SpecBuilder.requestSpecs())
                 .log().all()
                 .body(requestBody)
                 .when()
                 .post(path)
-                .then().spec(responseSpecs())
+                .then().spec(SpecBuilder.responseSpecs())
                 .extract()
                 .response();
     }
@@ -58,9 +57,9 @@ public class RestResources {
      * @apiNote GET request
      */
     public static Response get(String path) {
-        return given(requestSpecs())
+        return given(SpecBuilder.requestSpecs())
                 .when().get(path)
-                .then().spec(responseSpecs())
+                .then().spec(SpecBuilder.responseSpecs())
                 .extract()
                 .response();
     }

@@ -1,4 +1,4 @@
-package utilities.databaseOperations;
+package com.autong.utilities.databaseOperations;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.data.tables.*;

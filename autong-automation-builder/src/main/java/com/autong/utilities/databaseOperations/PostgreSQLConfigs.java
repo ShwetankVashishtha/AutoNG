@@ -1,6 +1,6 @@
-package utilities.databaseOperations;
+package com.autong.utilities.databaseOperations;
 
-import utilities.fileOperations.PropertyManager;
+import com.autong.utilities.fileOperations.PropertyManager;
 
 import java.sql.*;
 

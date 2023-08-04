@@ -1,4 +1,4 @@
-package base;
+package com.autong.base;
 
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -22,7 +22,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import utilities.fileOperations.PropertyManager;
+import com.autong.utilities.fileOperations.PropertyManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

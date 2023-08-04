@@ -1,10 +1,10 @@
-package utilities.databaseOperations;
+package com.autong.utilities.databaseOperations;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import utilities.fileOperations.PropertyManager;
+import com.autong.utilities.fileOperations.PropertyManager;
 
 /**
  * @author Shwetank Vashishtha

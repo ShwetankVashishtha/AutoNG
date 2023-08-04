@@ -1,4 +1,4 @@
-package base;
+package com.autong.base;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
