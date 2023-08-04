@@ -11,8 +11,8 @@ import static base.SpecBuilder.responseSpecs;
 import static io.restassured.RestAssured.given;
 
 /**
- * @author shwetankvashishtha
- * @version 1.0
+ * @author Shwetank Vashishtha
+ * @version 1.0.0
  * @since 2022
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

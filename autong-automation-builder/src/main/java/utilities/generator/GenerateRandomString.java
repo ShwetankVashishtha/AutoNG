@@ -4,8 +4,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * @author shwetankvashishtha
- * @version 1.0
+ * @author Shwetank Vashishtha
+ * @version 1.0.0
  * @since 2022
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

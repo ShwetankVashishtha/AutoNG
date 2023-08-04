@@ -5,8 +5,8 @@ import utilities.fileOperations.PropertyManager;
 import java.sql.*;
 
 /**
- * @author shwetankvashishtha
- * @version 1.0
+ * @author Shwetank Vashishtha
+ * @version 1.0.0
  * @since 2022
  */
 public class PostgreSQLConfigs {

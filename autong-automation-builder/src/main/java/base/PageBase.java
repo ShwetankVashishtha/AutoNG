@@ -4,8 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 /**
- * @author shwetankvashishtha
- * @version 1.0
+ * @author Shwetank Vashishtha
+ * @version 1.0.0
  * @since 2022
  */
 public class PageBase {

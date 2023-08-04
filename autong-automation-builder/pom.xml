@@ -10,7 +10,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>test-automation</groupId>
     <artifactId>autong-automation-builder</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>

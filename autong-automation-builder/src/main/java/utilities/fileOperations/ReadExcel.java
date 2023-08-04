@@ -8,8 +8,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
- * @author shwetankvashishtha
- * @version 1.0
+ * @author Shwetank Vashishtha
+ * @version 1.0.0
  * @since 2022
  */
 public class ReadExcel {

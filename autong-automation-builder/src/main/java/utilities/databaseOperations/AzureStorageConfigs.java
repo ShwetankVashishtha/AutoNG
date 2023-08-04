@@ -4,21 +4,26 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.data.tables.*;
 import com.azure.data.tables.models.ListEntitiesOptions;
 
+/**
+ * @author Shwetank Vashishtha
+ * @version 1.0.0
+ * @since 2023
+ */
 public class AzureStorageConfigs {
 
-    public static void getData() {
+    public static void getData(String accountName, String accountKey, String tableName, String storageAccount) {
         TableAsyncClient tableAsyncClient = new TableClientBuilder()
-                .endpoint("")
-                .credential(new AzureNamedKeyCredential("", ""))
-                .tableName("")
+                .endpoint("https://" + storageAccount + ".core.windows.net/")
+                .credential(new AzureNamedKeyCredential(accountName, accountKey))
+                .tableName(tableName)
                 .buildAsyncClient();
         System.out.println(tableAsyncClient.getTableName());
     }
 
-    public static void listTables() {
+    public static void listTables(String connectionString) {
         try {
             TableServiceClient tableServiceClient = new TableServiceClientBuilder()
-                    .connectionString("")
+                    .connectionString(connectionString)
                     .buildClient();
             tableServiceClient.listTables().forEach(tableItem ->
                     System.out.println(tableItem.getName())
@@ -28,10 +33,10 @@ public class AzureStorageConfigs {
         }
     }
 
-    public static void retrieveColumnData(String columnName, String tableName) {
+    public static void retrieveColumnData(String columnName, String tableName, String connectionString) {
         try {
             TableClient tableClient = new TableClientBuilder()
-                    .connectionString("")
+                    .connectionString(connectionString)
                     .tableName(tableName)
                     .buildClient();
             ListEntitiesOptions options = new ListEntitiesOptions().setFilter(columnName + " eq ''");
@@ -45,6 +50,6 @@ public class AzureStorageConfigs {
     }
 
     public static void main(String[] args) {
-        retrieveColumnData("", "");
+        retrieveColumnData("", "", "");
     }
 }
