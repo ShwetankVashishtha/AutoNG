@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class GenerateRandomNumber {
 
     public static int generateRandomNum(int min, int max) {
-
         return (int) Math.floor(Math.random() * (max - min + 1) + min);
     }
 }
