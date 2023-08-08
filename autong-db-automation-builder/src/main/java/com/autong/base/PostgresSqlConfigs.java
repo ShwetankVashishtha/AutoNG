@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostgresSqlConnection {
+public class PostgresSqlConfigs {
 
-    private static final Logger logger = Logger.getLogger(PostgresSqlConnection.class.getName());
+    private static final Logger logger = Logger.getLogger(PostgresSqlConfigs.class.getName());
     private Connection connection;
     private String host;
     private String db;

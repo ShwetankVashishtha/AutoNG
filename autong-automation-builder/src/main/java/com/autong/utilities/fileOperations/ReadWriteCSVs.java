@@ -1,4 +1,4 @@
-package com.avizva.test.db.builder.utilities;
+package com.autong.utilities.fileOperations;
 
 import com.opencsv.*;
 
@@ -9,6 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * @author Shwetank Vashishtha
+ * @version 1.0.0
+ * @since 2023
+ */
 public class ReadWriteCSVs {
 
     private static CSVParser getParser(char separator) {

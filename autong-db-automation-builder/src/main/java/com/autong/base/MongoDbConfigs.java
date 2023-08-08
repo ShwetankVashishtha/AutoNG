@@ -1,10 +1,9 @@
-package com.autong.utilities.databaseOperations;
+package com.autong.base;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import com.autong.utilities.fileOperations.PropertyManager;
 
 /**
  * @author Shwetank Vashishtha
@@ -14,12 +13,11 @@ import com.autong.utilities.fileOperations.PropertyManager;
 public class MongoDbConfigs {
 
     static MongoClient mongoClient;
-    static PropertyManager propertyManager = new PropertyManager();
 
     public static void writeConfigMongoDb() {
-        mongoClient = new MongoClient(propertyManager.getResourceBundle.getProperty("MONGODB_URL")
+        mongoClient = new MongoClient(("MONGODB_URL")
                 + ":"
-                + Integer.parseInt(propertyManager.getResourceBundle.getProperty("MONGODB_PORT")));
+                + Integer.parseInt("MONGODB_PORT"));
     }
 
     public static MongoDatabase getDB(String dbName) {
