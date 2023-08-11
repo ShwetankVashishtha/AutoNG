@@ -13,37 +13,59 @@
 
   <li>Database Test Automation (MySql, MongoDB, Postgresql, Azure Storage) </li> 
 
-  <li>Google Suite Integration (Gmail, Hangouts and Maps)</li>
+  <li>Cross-Cross-Browser Parallel Automation </li>
 
-  <li>Cross-Browser/Platform Test Automation </li>
+  <li>Cross-Platform Parallel Automation (Windows, MAC OS X) </li>
 
-  <li>Test-driven development </li>
+  <li>Test-driven development (TestNG) </li>
 
-  <li>Data-driven development </li> 
+  <li>Behaviour-driven development (Cucumber) </li> 
 
-  <li>Behaviour-driven development </li> 
-
-  <li>Project Build Tool (Maven or Gradle) </li> 
-
-  <li>QA Framework artefact on JFrog </li>
+  <li>Build tool (Maven) </li> 
 
   <li>Remote Execution on Docker Containers </li> 
 
-  <li>CI/CD Integration (Jenkins and Azure DevOps) </li> 
+  <li>CI/CD Integration (Jenkins and Azure DevOps) </li>
+
+  <li>Azure pipeline YAML </li> 
+
+  <li>Jenkins DSL </li> 
 
   <li>Automated Code Review (SonarQube Client) </li> 
 
-  <li>Lombok Library Integration </li>
+  <li>Lombok library Integration </li>
 
-  <li>Elastic Search </li> 
-
-  <li>QA Dashboards </li> 
+  <li>Logger </li> 
 
   <li>Defect management tool integration (JIRA Client) </li> 
 
   <li>Test management tool integration (TestRail Client) </li> 
 
+  <li>Google Chat tool Integration </li> 
+
   <li>Mocking Support (Mockito) </li>
+
+  <li>Custom annotations </li> 
+
+  <li>Custom exceptions </li>
+
+  <li>Chat-bot automation (Botium box) </li> 
+
+  <li>Elastic Search (Kibana / Grafana) </li> 
+
+  <li>QA artefacts upload (Sonatype) </li> 
+
+  <li>LambaTest and BrowserStack </li> 
+
+  <li>ChatGPT Integration </li>
+
+  <li>AWS EC2 </li> 
+
+  <li>Slack tool Integration </li> 
+
+  <li>Real-time dashboards </li> 
+
+  <li>Jira X-Ray Plugin </li>
 
 </ul>
 
