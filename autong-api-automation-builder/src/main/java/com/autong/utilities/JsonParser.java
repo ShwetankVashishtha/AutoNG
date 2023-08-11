@@ -23,7 +23,7 @@ public class JsonParser {
      * @param <T>          generics
      * @return JSON object / JSON array
      * @throws IOException external file path input exception
-     * @author Akhil Khandelwal
+     * @author Shwetank Vashishtha
      */
     public <T> T getPOJOObjectFromJSONFile(String jsonFileName, Class<T> classType) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -40,11 +40,31 @@ public class JsonParser {
      * @param classType  accepts class type
      * @return JSON object / JSON array
      * @throws IOException external file path input exception
-     * @author Akhil Khandelwal
+     * @author Shwetank Vashishtha
      */
     public <T> T getPOJOObjectFromJSONString(String jsonString, Class<T> classType) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         T objectClass = (T) objectMapper.readValue(jsonString, classType);
         return objectClass;
+    }
+
+    /**
+     * This method will take the path of the json file as input and will return a JSONObject/JSONArray.
+     * The returned object will have to be type-casted at the location where the method is called.
+     *
+     * @param jsonObject JSON object / JSON array
+     * @return JSON String
+     * @throws IOException external file path input exception
+     * @author Shwetank Vashishtha
+     */
+    public String convertToJsonString(Object jsonObject) {
+        String jsonString = null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            jsonString = objectMapper.writeValueAsString(jsonObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonString;
     }
 }

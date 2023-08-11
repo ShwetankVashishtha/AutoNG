@@ -19,23 +19,55 @@ import java.util.Map;
 public class SpecBuilder {
 
     /**
-     * @param headers accepts api request headers
+     * @param basePath
+     * @param username
+     * @param password
+     * @param headers  accepts api request headers
      * @return Request Specifications
      */
-    public static RequestSpecification requestSpecs(Map<String, String> headers) {
+    public static RequestSpecification requestSpecs(String basePath, String username, String password, Map<String, String> headers) {
         return new RequestSpecBuilder()
-                .setBasePath("")
+                .setAuth(RestAuthenticator.setAuthentication(username, password))
+                .setBasePath(basePath)
                 .setContentType(ContentType.JSON)
                 .addHeaders(headers)
                 .build();
     }
 
     /**
+     * @param basePath
+     * @param headers  accepts api request headers
      * @return Request Specifications
      */
-    public static RequestSpecification requestSpecs() {
+    public static RequestSpecification requestSpecs(String basePath, Map<String, String> headers) {
         return new RequestSpecBuilder()
-                .setBasePath("")
+                .setBasePath(basePath)
+                .setContentType(ContentType.JSON)
+                .addHeaders(headers)
+                .build();
+    }
+
+    /**
+     * @param basePath
+     * @param username
+     * @param password
+     * @return Request Specifications
+     */
+    public static RequestSpecification requestSpecs(String basePath, String username, String password) {
+        return new RequestSpecBuilder()
+                .setAuth(RestAuthenticator.setAuthentication(username, password))
+                .setBasePath(basePath)
+                .setContentType(ContentType.JSON)
+                .build();
+    }
+
+    /**
+     * @param basePath
+     * @return Request Specifications
+     */
+    public static RequestSpecification requestSpecs(String basePath) {
+        return new RequestSpecBuilder()
+                .setBasePath(basePath)
                 .setContentType(ContentType.JSON)
                 .build();
     }

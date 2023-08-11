@@ -1,8 +1,9 @@
 package com.autong.base;
 
-import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.commons.httpclient.util.HttpURLConnection;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.*;
@@ -13,25 +14,20 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import com.autong.utilities.fileOperations.PropertyManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,137 +40,156 @@ import java.util.logging.Logger;
  * @version 1.0.0
  * @since 2022
  */
-public class TestBase extends WebDriverTestBase {
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class TestBase {
 
-    Logger logger = Logger.getLogger("AutoNG logger");
-    PropertyManager pm = new PropertyManager();
-    Actions actions;
-    JavascriptExecutor javascriptExecutor;
+    private static final Logger logger = Logger.getLogger(TestBase.class.getName());
+    protected static WebDriver driver;
+    static Actions actions;
+    static JavascriptExecutor javascriptExecutor;
 
-    @Override
-    public WebDriver getDriver() {
-        return driver;
-    }
-
-    @Override
-    public void setupBrowser(String browser, String URL) throws MalformedURLException {
-        if (System.getProperty("os.name").startsWith("Mac")) {
-            if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
-                EdgeOptions edgeOptions = new EdgeOptions();
-                driver = new EdgeDriver(edgeOptions);
-                driver.manage().window().maximize();
-                openURL(URL);
-            } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                driver = new FirefoxDriver(firefoxOptions);
-                driver.manage().window().maximize();
-                openURL(URL);
-            } else if (browser.equalsIgnoreCase("chrome")) {
-                Map<String, Object> pref = new HashMap<>();
-                pref.put("profile.default_content_setting_values.notifications", 2);
-                ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--remote-allow-origins=*");
-                chromeOptions.setExperimentalOption("prefs", pref);
-                chromeOptions.addArguments("--disable-notifications");
-                driver = new ChromeDriver(chromeOptions);
-                driver.manage().window().maximize();
-                openURL(URL);
-            } else if (browser.equalsIgnoreCase("headless") || browser.equalsIgnoreCase("phantomjs")) {
-                System.setProperty("phantomjs.binary.path",
-                        System.getProperty("user.dir") + pm.getResourceBundle.getProperty("PHANTOMJS_DRIVER_PATH_MAC"));
-                driver = new PhantomJSDriver();
-                driver.manage().window().maximize();
-                openURL(URL);
-            } else if (browser.equalsIgnoreCase("safari")) {
-                SafariOptions safariOptions = new SafariOptions();
-                driver = new SafariDriver(safariOptions);
-                driver.manage().window().maximize();
-                openURL(URL);
+    /**
+     * This function initialise browser-specific drivers
+     * and opens a web url in selected browser with maximized browser window
+     * <p>
+     * Supported browsers: Chrome, Firefox, IE Edge, Safari
+     * Supported OS: Mac OS-X and Windows
+     *
+     * @param browser execution browser name
+     * @param URL     web app url
+     */
+    public static void setupBrowser(String browser, String URL) {
+        try {
+            if (System.getProperty("os.name").startsWith("Mac")) {
+                if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    driver = new EdgeDriver(edgeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    driver = new FirefoxDriver(firefoxOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("chrome")) {
+                    Map<String, Object> pref = new HashMap<>();
+                    pref.put("profile.default_content_setting_values.notifications", 2);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-notifications");
+                    driver = new ChromeDriver(chromeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("safari")) {
+                    SafariOptions safariOptions = new SafariOptions();
+                    driver = new SafariDriver(safariOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                }
+            } else if (System.getProperty("os.name").startsWith("Windows")) {
+                if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
+                    driver = new EdgeDriver();
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    driver = new FirefoxDriver(firefoxOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("chrome")) {
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    WebDriverManager.chromedriver().setup();
+                    chromeOptions.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    driver = new ChromeDriver(chromeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                }
             }
-        } else if (System.getProperty("os.name").startsWith("Windows")) {
-            if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
-                driver = new EdgeDriver();
-                driver.manage().window().maximize();
-                openURL(URL);
-            } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                driver = new FirefoxDriver(firefoxOptions);
-                driver.manage().window().maximize();
-                openURL(URL);
-            } else if (browser.equalsIgnoreCase("chrome")) {
-                ChromeOptions chromeOptions = new ChromeOptions();
-                WebDriverManager.chromedriver().setup();
-                chromeOptions.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
-                chromeOptions.addArguments("--remote-allow-origins=*");
-                driver = new ChromeDriver(chromeOptions);
-                driver.manage().window().maximize();
-                openURL(URL);
-            } else if (browser.equalsIgnoreCase("headless") || browser.equalsIgnoreCase("phantomjs")) {
-                driver = new PhantomJSDriver();
-                driver.manage().window().maximize();
-                openURL(URL);
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    @Override
-    public void setUpiOS() throws MalformedURLException {
-        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability("platformName", pm.getResourceBundle.getProperty("IOS_PLATFORM_NAME"));
-        desiredCapabilities.setCapability("platformVersion", pm.getResourceBundle.getProperty("IOS_PLATFORM_VERSION"));
-        desiredCapabilities.setCapability("deviceName", pm.getResourceBundle.getProperty("IOS_DEVICE_NAME"));
-        desiredCapabilities.setCapability("udid", "auto");
-        desiredCapabilities.setCapability(MobileCapabilityType.APP, pm.getResourceBundle.getProperty("APP_FILE"));
-        desiredCapabilities.setCapability(MobileCapabilityType.NO_RESET, true);
-        driver = new RemoteWebDriver(new URL("http://127.0.0.1:4723/wd/hub"), desiredCapabilities);
-    }
-
-    @Override
-    public void setUpAndroid(Boolean skipUnlock, Boolean noReset) throws MalformedURLException {
-        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability("platformName", pm.getResourceBundle.getProperty("ANDROID_PLATFORM_NAME"));
-        desiredCapabilities.setCapability("platformVersion", pm.getResourceBundle.getProperty("ANDROID_PLATFORM_VERSION"));
-        desiredCapabilities.setCapability("deviceName", pm.getResourceBundle.getProperty("ANDROID_DEVICE_NAME"));
-        desiredCapabilities.setCapability("appPackage", pm.getResourceBundle.getProperty("ANDROID_APP_PACKAGE"));
-        desiredCapabilities.setCapability("appActivity", pm.getResourceBundle.getProperty("ANDROID_APP_ACTIVITY"));
-        desiredCapabilities.setCapability("noReset", noReset);
-        desiredCapabilities.setCapability("skipUnlock", skipUnlock);
-        driver = new RemoteWebDriver(new URL("http://127.0.0.1:4723/wd/hub"), desiredCapabilities);
-    }
-
-    @Override
-    public void openURL(String AUT_URL) {
+    /**
+     * This function passes application url in opened browser window
+     * and implicitly wait for page to load
+     *
+     * @param AUT_URL accepts url to open
+     */
+    public static void openURL(String AUT_URL) {
         driver.get(AUT_URL);
     }
 
-    @Override
-    public void refreshPage() {
+    /**
+     * This function refreshes web page in opened browser window
+     * and implicitly wait for page to load.
+     */
+    public static void refreshPage() {
         driver.navigate().refresh();
     }
 
-    @Override
-    public void closeCurrentSession() {
-        driver.close();
+    /**
+     * This function closes current browser window
+     * Given that driver value isn't null
+     */
+    public static void closeCurrentSession() {
+        if (driver != null) {
+            driver.close();
+        } else {
+            logger.info("No open session found!");
+        }
     }
 
-    @Override
-    public void closeActiveSessions() {
-        driver.manage().deleteAllCookies();
-        driver.quit();
+    /**
+     * This function closes all browser windows
+     * Given that driver value isn't null
+     */
+    public static void closeActiveSessions() {
+        if (driver != null) {
+            driver.manage().deleteAllCookies();
+            driver.quit();
+        } else {
+            logger.info("No open session found!");
+        }
     }
 
-    @Override
-    public void openCurrentBrowserInstance() {
-        driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "n");
+    /**
+     * This function opens a new browser window
+     * Given that driver value isn't null
+     */
+    public static void openCurrentBrowserInstance() {
+        if (driver != null) {
+            driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "n");
+        } else {
+            logger.info("No open session found!");
+        }
     }
 
-    @Override
-    public void openNewBrowserTab() {
-        driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "t");
+    /**
+     * This function opens a new browser tab
+     * Given that driver value isn't null
+     */
+    public static void openNewBrowserTab() {
+        if (driver != null) {
+            driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "t");
+        } else {
+            logger.info("No open session found!");
+        }
     }
 
-    @Override
-    public void pause(long timeoutInMilliSeconds) {
+
+    /**
+     * This function puts execution at sleep for specified halt time
+     * Execution resumes only after it passes provided pause time
+     * <p>
+     * Note: Not recommended. Look for dynamic waits instead.
+     *
+     * @param timeoutInMilliSeconds accepts sleep time in milliseconds
+     */
+    public static void pause(long timeoutInMilliSeconds) {
         try {
             Thread.sleep(timeoutInMilliSeconds);
         } catch (InterruptedException e) {
@@ -182,19 +197,16 @@ public class TestBase extends WebDriverTestBase {
         }
     }
 
-    @Override
-    public void implicitWait(long timeout) {
+    public static void implicitWait(long timeout) {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
     }
 
-    @Override
-    public void fluentWait(long timeout, long polling) {
+    public static void fluentWait(long timeout, long polling) {
         new FluentWait<>(driver).withTimeout(Duration.ofSeconds(timeout))
                 .pollingEvery(Duration.ofMillis(polling)).ignoring(NoSuchElementException.class);
     }
 
-    @Override
-    public void waitForPageLoad(long timeout) {
+    public static void waitForPageLoad(long timeout) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
         wait.until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
@@ -203,115 +215,90 @@ public class TestBase extends WebDriverTestBase {
         });
     }
 
-    @Override
-    public void waitForElementVisible(long timeout, WebElement element) {
+    public static void waitForElementVisible(long timeout, WebElement element) {
         new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.visibilityOf(element));
     }
 
-    @Override
-    public void waitForElementDisappear(long timeout, WebElement element) {
+    public static void waitForElementDisappear(long timeout, WebElement element) {
         new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.invisibilityOf(element));
     }
 
-    @Override
-    public void waitForElementToBeClickable(long timeout, WebElement element) {
+    public static void waitForElementToBeClickable(long timeout, WebElement element) {
         new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    @Override
-    public void waitForPageExpire(long timeout) {
+    public static void waitForPageExpire(long timeout) {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(timeout));
     }
 
-    @Override
-    public void setAsyncScriptTimeout(long timeout) {
+    public static void setAsyncScriptTimeout(long timeout) {
         driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(timeout));
     }
 
-    @Override
-    public void waitForTextToBePresentInElement(long timeout, WebElement element, String text) {
+    public static void waitForTextToBePresentInElement(long timeout, WebElement element, String text) {
         new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.textToBePresentInElement(element, text));
     }
 
-    @Override
-    public void waitForPageTitle(long timeout, String pageTitle) {
+    public static void waitForPageTitle(long timeout, String pageTitle) {
         new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.titleIs(pageTitle));
     }
 
-    @Override
-    public void frameToBeAvailableAndSwitch(long timeout, String frameID) {
+    public static void frameToBeAvailableAndSwitch(long timeout, String frameID) {
         new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id(frameID)));
     }
 
-    @Override
-    public void scrollToBottom() {
+    public static void scrollToBottom() {
         javascriptExecutor = (JavascriptExecutor) driver;
         javascriptExecutor.executeScript("window.scrollTo(0, document.body.scrollHeight)");
     }
 
-    @Override
     public void scrollToElement(WebElement element) {
         javascriptExecutor = (JavascriptExecutor) driver;
         javascriptExecutor.executeScript("arguments[0].scrollIntoView();", element);
     }
 
-    @Override
-    public void scrollToTop() {
+    public static void scrollToTop() {
         javascriptExecutor = (JavascriptExecutor) driver;
         javascriptExecutor.executeScript("window.scrollTo(0, -document.body.scrollHeight)");
     }
 
-    @Override
-    public void javaScriptClick(WebElement element) {
+    public static void javaScriptClick(WebElement element) {
         JavascriptExecutor executor = (JavascriptExecutor) driver;
         executor.executeScript("arguments[0].click();", element);
     }
 
-    @Override
-    public void scrollUsingCoordinates() {
+    public static void scrollUsingCoordinates() {
         javascriptExecutor = (JavascriptExecutor) driver;
         javascriptExecutor.executeScript("window.scrollBy(0,500)");
     }
 
-    @Override
-    public String getPageTitle() {
+    public static String getPageTitle() {
         return driver.getTitle();
     }
 
-    @Override
-    public void switchBrowserTab(int tabId) {
-        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(tabId));
-    }
-
-    @Override
-    public void contextClick(WebElement element) {
+    public static void contextClick(WebElement element) {
         actions = new Actions(driver);
         actions.moveToElement(element).contextClick().build().perform();
     }
 
-    @Override
-    public void mouseHover(WebElement element) {
+    public static void mouseHover(WebElement element) {
         actions = new Actions(driver);
         actions.moveToElement(element).build().perform();
     }
 
-    @Override
-    public void dragAndDrop(WebElement fromElement, WebElement toElement) {
+    public static void dragAndDrop(WebElement fromElement, WebElement toElement) {
         actions = new Actions(driver);
         actions.dragAndDrop(fromElement, toElement).perform();
     }
 
-    @Override
-    public void dragAndDropBy(WebElement fromElement, WebElement toElement) {
+    public static void dragAndDropBy(WebElement fromElement, WebElement toElement) {
         actions = new Actions(driver);
         Rectangle start = fromElement.getRect();
         Rectangle finish = toElement.getRect();
         actions.dragAndDropBy(fromElement, finish.getX() - start.getX(), finish.getY() - start.getY()).build().perform();
     }
 
-    @Override
-    public void pressEnterKey() {
+    public static void pressEnterKey() {
         try {
             Robot robot = new Robot();
             robot.keyPress(KeyEvent.VK_ENTER);
@@ -321,31 +308,43 @@ public class TestBase extends WebDriverTestBase {
         }
     }
 
-    @Override
-    public void cleanup() {
-        String folderPath = pm.getResourceBundle.getProperty("TARGET_FOLDER_PATH");
+    public static void takeScreenshot(String filePath) {
         try {
-            if (Files.exists(Path.of(folderPath)) && !folderPath.isEmpty()) {
-                FileUtils.deleteDirectory(new File(folderPath));
-            }
-        } catch (Exception e) {
+            TakesScreenshot takesScreenshot = ((TakesScreenshot) driver);
+            File file = takesScreenshot.getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(file, new File(filePath));
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void deleteFolder(File folder) {
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+        folder.delete();
     }
 
     public void switchToFrame(int frameIndex) {
         driver.switchTo().frame(frameIndex);
     }
 
-    public void switchToFrame(String frameNameOrId) {
+    public static void switchToFrame(String frameNameOrId) {
         driver.switchTo().frame(frameNameOrId);
     }
 
-    public void switchToDefault() {
+    public static void switchToDefault() {
         driver.switchTo().defaultContent();
     }
 
-    public void getBrokenLinks(String baseUrl) {
+    public static void getBrokenLinks(String baseUrl) {
         String url = "";
         HttpURLConnection httpURLConnection = null;
         int responseCode = 200;
@@ -379,5 +378,22 @@ public class TestBase extends WebDriverTestBase {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void openAndSwitchBrowserTab(String URL, int tabId) {
+        javascriptExecutor = (JavascriptExecutor) driver;
+        javascriptExecutor.executeScript("window.open()");
+        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(tabId));
+        openURL(URL);
+    }
+
+    public static void switchBrowserTab(int tabId) {
+        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(tabId));
+    }
+
+    public static String getCurrentUrl() {
+        return driver.getCurrentUrl();
     }
 }

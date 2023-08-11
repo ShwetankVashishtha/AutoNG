@@ -8,7 +8,6 @@ import org.apache.http.HttpStatus;
  * @since 2022
  */
 public enum StatusCodeValidator {
-
     CODE_200(HttpStatus.SC_OK, "OK"),
     CODE_201(HttpStatus.SC_CREATED, "Created"),
     CODE_400(HttpStatus.SC_BAD_REQUEST, "Bad Request"),

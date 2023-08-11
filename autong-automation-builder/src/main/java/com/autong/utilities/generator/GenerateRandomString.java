@@ -1,15 +1,37 @@
 package com.autong.utilities.generator;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import java.util.Random;
 
 /**
  * @author Shwetank Vashishtha
  * @version 1.0.0
  * @since 2022
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GenerateRandomString {
+
+    public String generateRandomAlphaNumericString() {
+        String candidateChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        int length = 8;
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(candidateChars.charAt(random.nextInt(candidateChars
+                    .length())));
+        }
+        return sb.toString();
+    }
+
+    public String generateRandomString() {
+        String candidateChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int length = 4;
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(candidateChars.charAt(random.nextInt(candidateChars
+                    .length())));
+        }
+        return sb.toString();
+    }
 
     public static String generateRandomString(int min, int max) {
         final String CHAR_LIST = "abcd";
