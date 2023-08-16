@@ -2,7 +2,6 @@ package com.autong.base;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Rectangle;
@@ -40,7 +39,6 @@ import java.util.logging.Logger;
  * @version 1.0.0
  * @since 2022
  */
-@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TestBase {
 
@@ -49,12 +47,19 @@ public class TestBase {
     static Actions actions;
     static JavascriptExecutor javascriptExecutor;
 
+    public static WebDriver getDriver() {
+        return driver;
+    }
+
     /**
      * This function initialise browser-specific drivers
      * and opens a web url in selected browser with maximized browser window
      * <p>
      * Supported browsers: Chrome, Firefox, IE Edge, Safari
      * Supported OS: Mac OS-X and Windows
+     * <p>
+     * Post browser initialization, function further executes to maximize browser window
+     * pointing to {@link #setupBrowser(String, String)}
      *
      * @param browser execution browser name
      * @param URL     web app url
@@ -252,7 +257,7 @@ public class TestBase {
         javascriptExecutor.executeScript("window.scrollTo(0, document.body.scrollHeight)");
     }
 
-    public void scrollToElement(WebElement element) {
+    public static void scrollToElement(WebElement element) {
         javascriptExecutor = (JavascriptExecutor) driver;
         javascriptExecutor.executeScript("arguments[0].scrollIntoView();", element);
     }

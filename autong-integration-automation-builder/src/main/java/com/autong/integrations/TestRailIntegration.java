@@ -23,7 +23,7 @@ public class TestRailIntegration {
     static private String testRailHostUrl, testRailUsername, testRailPassword, runId;
 
     public static void getRun() {
-        response = RestResources.get(testRailHostUrl, testRailUsername, testRailPassword, "/api/v2/get_run/" + runId);
+        response = RestResources.get(testRailHostUrl + "/api/v2/get_run/", testRailUsername, testRailPassword + runId);
         logger.info(response.asPrettyString());
     }
 }
