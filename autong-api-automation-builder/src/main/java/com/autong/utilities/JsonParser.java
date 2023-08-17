@@ -16,12 +16,12 @@ public class JsonParser {
     private static final Logger logger = Logger.getLogger(JsonParser.class.getName());
 
     /**
-     * This method will take the path of the json file as input and will return a JSONObject/JSONArray.
+     * This method will take the path of the JSONFile as input and will return a JSONObject/JSONArray.
      * The returned object will have to be type-casted at the location where the method is called.
      *
-     * @param jsonFileName external JSON file path
+     * @param jsonFileName external JSONFile path
      * @param <T>          generics
-     * @return JSON object / JSON array
+     * @return JSONObject / JSONArray
      * @throws IOException external file path input exception
      * @author Shwetank Vashishtha
      */
@@ -32,13 +32,13 @@ public class JsonParser {
     }
 
     /**
-     * This method will take the path of the json file as input and will return a JSONObject/JSONArray.
+     * This method will take the path of the JSONString as input and will return a JSONObject/JSONArray.
      * The returned object will have to be type-casted at the location where the method is called.
      *
-     * @param jsonString JSON string
+     * @param jsonString JSONString
      * @param <T>        generics
      * @param classType  accepts class type
-     * @return JSON object / JSON array
+     * @return JSONObject / JSONArray
      * @throws IOException external file path input exception
      * @author Shwetank Vashishtha
      */
@@ -49,11 +49,11 @@ public class JsonParser {
     }
 
     /**
-     * This method will take the path of the json file as input and will return a JSONObject/JSONArray.
+     * This method will take the JSONObject as input and will return a JSONString.
      * The returned object will have to be type-casted at the location where the method is called.
      *
-     * @param jsonObject JSON object / JSON array
-     * @return JSON String
+     * @param jsonObject JSONObject / JSONArray
+     * @return JSONString
      * @throws IOException external file path input exception
      * @author Shwetank Vashishtha
      */
