@@ -12,7 +12,8 @@ pool:
 steps:
 - task: Maven@4
   inputs:
-    mavenPomFile: 'pom.xml'
+    mavenPomFile: 'AutoNG/pom.xml'
+    mavenOptions: '-Xmx3072m'
     goals: 'clean package'
     publishJUnitResults: false
     javaHomeOption: 'JDKVersion'
