@@ -13,7 +13,7 @@ steps:
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: '18'
-      jdkArchitectureOption: 'x86'
+      jdkArchitectureOption: 'X86'
       jdkSourceOption: 'PreInstalled'
 
   - task: Maven@3
@@ -24,7 +24,7 @@ steps:
       publishJUnitResults: false
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '18'
-      jdkArchitectureOption: 'x86'
+      jdkArchitectureOption: 'X86'
       mavenVersionOption: 'Default'
       mavenAuthenticateFeed: false
       effectivePomSkip: false
