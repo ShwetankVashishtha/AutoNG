@@ -17,7 +17,7 @@ steps:
       goals: 'clean package'
       publishJUnitResults: false
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '18'
+      jdkVersionOption: '11'
       jdkArchitectureOption: 'x64'
       mavenVersionOption: 'Default'
       mavenAuthenticateFeed: false
