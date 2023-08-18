@@ -1,4 +1,4 @@
-package com.autong.utilities.annotations;
+package com.autong.utilities.meta;
 
 /**
  * @author Shwetank Vashishtha

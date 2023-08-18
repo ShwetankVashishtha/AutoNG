@@ -1,4 +1,4 @@
-package com.autong.utilities.annotations;
+package com.autong.utilities.meta;
 
 /**
  * @author Shwetank Vashishtha
@@ -12,5 +12,6 @@ public enum LocateUsing {
     PARTIAL_TEXT,
     CLASS,
     LINK_TEXT,
+    TAG_NAME,
     NAME
 }

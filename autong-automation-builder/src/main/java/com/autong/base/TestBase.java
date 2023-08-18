@@ -1,9 +1,12 @@
 package com.autong.base;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import com.autong.utilities.annotations.ElementMeta;
+import com.autong.utilities.annotations.MobileSpecificField;
+import com.autong.utilities.annotations.WebSpecificField;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,15 +27,15 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * @author Shwetank Vashishtha
@@ -44,11 +47,16 @@ public class TestBase {
 
     private static final Logger logger = Logger.getLogger(TestBase.class.getName());
     protected static WebDriver driver;
+    protected static WebDriver mobileDriver;
     static Actions actions;
     static JavascriptExecutor javascriptExecutor;
 
     public static WebDriver getDriver() {
         return driver;
+    }
+
+    public static WebDriver getMobileDriver() {
+        return mobileDriver;
     }
 
     /**
@@ -104,10 +112,12 @@ public class TestBase {
                     driver.manage().window().maximize();
                     openURL(URL);
                 } else if (browser.equalsIgnoreCase("chrome")) {
+                    Map<String, Object> pref = new HashMap<>();
+                    pref.put("profile.default_content_setting_values.notifications", 2);
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    WebDriverManager.chromedriver().setup();
-                    chromeOptions.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
                     chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-notifications");
                     driver = new ChromeDriver(chromeOptions);
                     driver.manage().window().maximize();
                     openURL(URL);
@@ -137,6 +147,34 @@ public class TestBase {
     }
 
     /**
+     * This function checks for opened web driver
+     *
+     * @return boolean value
+     */
+    public static boolean isWeb() {
+        if (driver != null) {
+            return true;
+        } else {
+            logger.info("No web app open session found!");
+        }
+        return false;
+    }
+
+    /**
+     * This function checks for opened mobile driver
+     *
+     * @return boolean value
+     */
+    public static boolean isMobile() {
+        if (mobileDriver != null) {
+            return true;
+        } else {
+            logger.info("No mobile app open session found!");
+        }
+        return false;
+    }
+
+    /**
      * This function closes current browser window
      * Given that driver value isn't null
      */
@@ -144,7 +182,7 @@ public class TestBase {
         if (driver != null) {
             driver.close();
         } else {
-            logger.info("No open session found!");
+            logger.info("No web app open session found!");
         }
     }
 
@@ -400,5 +438,23 @@ public class TestBase {
 
     public static String getCurrentUrl() {
         return driver.getCurrentUrl();
+    }
+
+    public static boolean isViewMobile() {
+        return true;
+    }
+
+    public static List<Field> getFieldsForPlatform(Object object) {
+        if (isViewMobile()) {
+            return Arrays.stream(object.getClass().getDeclaredFields())
+                    .filter(field -> field.isAnnotationPresent(ElementMeta.class) &&
+                            !field.isAnnotationPresent(WebSpecificField.class))
+                    .collect(Collectors.toList());
+        } else {
+            return Arrays.stream(object.getClass().getDeclaredFields())
+                    .filter(field -> field.isAnnotationPresent(ElementMeta.class) &&
+                            !field.isAnnotationPresent(MobileSpecificField.class))
+                    .collect(Collectors.toList());
+        }
     }
 }

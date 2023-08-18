@@ -1,5 +1,7 @@
 package com.autong.utilities.annotations;
 
+import com.autong.utilities.meta.LocateUsing;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,5 +19,5 @@ public @interface ElementMeta {
 
     String locator() default "";
 
-    String elementName();
+    String elementName() default "";
 }
