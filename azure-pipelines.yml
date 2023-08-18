@@ -4,20 +4,22 @@
 # https://aka.ms/yaml
 
 trigger:
-- 1.0.0
+  - 1.0.0
 
 pool:
   vmImage: macOS-latest
 
 steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
-    mavenOptions: '-Xmx3072m'
-    goals: 'clean package'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
+  - task: Maven@3
+    inputs:
+      mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
+      mavenOptions: '-Xmx3072m'
+      goals: 'clean package'
+      publishJUnitResults: false
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '18'
+      jdkArchitectureOption: 'x64'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
