@@ -1,41 +1,22 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
 
 trigger:
-  - 1.0.0
+- 1.0.0
 
 pool:
   vmImage: macOS-latest
 
 steps:
-  - # Java tool installer v0
-    # Acquire a specific version of Java from a user-supplied Azure blob or the tool cache and sets JAVA_HOME.
-    - task: JavaToolInstaller@0
-      inputs:
-        versionSpec: '18' # string. Required. JDK version. Default: 8.
-        jdkArchitectureOption: # 'x64' | 'x86'. Required. JDK architecture.
-        jdkSourceOption: # 'AzureStorage' | 'LocalDirectory' | 'PreInstalled'. Required. JDK source.
-        #jdkFile: # string. Required when jdkSourceOption == LocalDirectory. JDK file.
-        #azureResourceManagerEndpoint: # string. Required when jdkSourceOption == AzureStorage. Azure subscription.
-        #azureStorageAccountName: # string. Required when jdkSourceOption == AzureStorage. Storage account name.
-        #azureContainerName: # string. Required when jdkSourceOption == AzureStorage. Container name.
-        #azureCommonVirtualFile: # string. Required when jdkSourceOption == AzureStorage. Common virtual path.
-        #jdkDestinationDirectory: # string. Required when jdkSourceOption != PreInstalled. Destination directory.
-        #azureResourceGroupName: # string. Optional. Use when jdkSourceOption == AzureStorage. Resource Group name.
-        #cleanDestinationDirectory: true # boolean. Optional. Use when jdkSourceOption != PreInstalled. Clean destination directory. Default: true.
-        #createExtractDirectory: true # boolean. Optional. Use when jdkSourceOption != PreInstalled. Create directory for extracting. Default: true.
-  - task: Maven@3
-    inputs:
-      mavenPomFile: 'pom.xml'
-      mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '18'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      goals: 'clean package'
-      mavenVersionOption: 'Default'
-      mavenAuthenticateFeed: false
-      effectivePomSkip: false
-      sonarQubeRunAnalysis: true
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean package'
+    publishJUnitResults: false
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
