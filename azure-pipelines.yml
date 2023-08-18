@@ -12,7 +12,7 @@ pool:
 steps:
 - task: Maven@4
   inputs:
-    mavenPomFile: 'AutoNG/pom.xml'
+    mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
     mavenOptions: '-Xmx3072m'
     goals: 'clean package'
     publishJUnitResults: false
