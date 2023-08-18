@@ -78,4 +78,4 @@ Please walk through corresponding <a href="https://github.com/ShwetankVashishtha
 
 # Documentation & Tutorials
 
-See AutoNG Developer Guide at <a href="https://loom.com/share/folder/d40821f2ef7f418999650dfc1a53e0a9">Loom AutoNG Documentation</a> 
+See <a href="https://www.loom.com/looms/videos/AutoNG-8795c3caa1f6401cad91981275ed07dc">AutoNG Developer Guide</a> 
