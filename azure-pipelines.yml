@@ -10,7 +10,7 @@ pool:
   vmImage: macOS-latest
 
 steps:
-- task: Maven@4
+- task: Maven@3
   inputs:
     mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
     mavenOptions: '-Xmx3072m'
