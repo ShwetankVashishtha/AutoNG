@@ -10,6 +10,12 @@ pool:
   vmImage: macOS-latest
 
 steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '18'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+    
   - task: Maven@3
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
@@ -17,7 +23,7 @@ steps:
       goals: 'clean package'
       publishJUnitResults: false
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '11'
+      jdkVersionOption: '18'
       jdkArchitectureOption: 'x64'
       mavenVersionOption: 'Default'
       mavenAuthenticateFeed: false
