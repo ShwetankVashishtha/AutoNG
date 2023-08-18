@@ -1,5 +1,5 @@
 # AutoNG Application Automation Platform
-
+<img src="https://media.licdn.com/dms/image/D4D16AQEYgS7rSyJU0A/profile-displaybackgroundimage-shrink_350_1400/0/1670424384589?e=1697673600&v=beta&t=xlJLcMqqkFLacAIGQ5Z-5Si9D_pRm9HtnZm7l3he4Cg" alt="AutoNG" width="750" height="200">
 
 # Features and Functionalities
 
@@ -74,7 +74,6 @@
 # Integration with CI/CD
 
 Please walk through corresponding <a href="https://github.com/ShwetankVashishtha/DSLs/blob/main/jenkins_autong.dsl">Jenkins DSL</a> written in Groovy to integrate continuous builds with pipeline for your end-to-end tests.
-
 
 
 # Documentation & Tutorials
