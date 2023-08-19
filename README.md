@@ -35,8 +35,6 @@
 
   <li>Lombok library Integration </li>
 
-  <li>Logger </li> 
-
   <li>Defect management tool integration (JIRA Client) </li> 
 
   <li>Test management tool integration (TestRail Client) </li> 
