@@ -14,17 +14,25 @@ import java.util.logging.Logger;
  * @version 1.0.0
  * @since 2023
  */
-@Getter
-@Setter
 @AllArgsConstructor
 public class PostgresSqlConfigs {
 
     private static final Logger logger = Logger.getLogger(PostgresSqlConfigs.class.getName());
-    private Connection connection;
-    private String host;
-    private String db;
-    private String username;
-    private String password;
+    @Getter
+    @Setter
+    static private Connection connection;
+    @Getter
+    @Setter
+    static private String host;
+    @Getter
+    @Setter
+    static private String db;
+    @Getter
+    @Setter
+    static private String username;
+    @Getter
+    @Setter
+    static private String password;
 
     /**
      * This method will take the db host name and credentials (username & password) as input and
@@ -33,7 +41,7 @@ public class PostgresSqlConfigs {
      * @param host     db host url
      * @param username db user name
      */
-    private void openConnection(String host, String db, String username, String password) {
+    private static void openConnection(String host, String db, String username, String password) {
         try {
             logger.info("Setting up PostgresSQL JDBC driver manager");
             String driver = "org.postgresql.Driver";
@@ -54,7 +62,7 @@ public class PostgresSqlConfigs {
      * @param query db query
      * @return results sets
      */
-    private ResultSet executeQuery(String query) {
+    private static ResultSet executeQuery(String query) {
         try {
             logger.info("Creating Statement");
             Statement statement = getConnection().createStatement();
@@ -74,7 +82,7 @@ public class PostgresSqlConfigs {
      * @param columnLabel column name
      * @return list of items in table column
      */
-    public ArrayList<String> getResultSet(String query, String columnLabel) {
+    public static ArrayList<String> getResultSet(String query, String columnLabel) {
         try {
             openConnection(getHost(), getDb(), getUsername(), getPassword());
             ResultSet rs = executeQuery(query);
@@ -101,7 +109,7 @@ public class PostgresSqlConfigs {
      * @param query db query
      * @return hash map storing table data
      */
-    public synchronized HashMap<String, String> getResultSet(String query) {
+    public static synchronized HashMap<String, String> getResultSet(String query) {
         HashMap<String, String> dataMap = new HashMap<>();
         try {
             openConnection(getHost(), getDb(), getUsername(), getPassword());
@@ -126,7 +134,7 @@ public class PostgresSqlConfigs {
      * At the end of your JDBC program, it is required explicitly to close all the connections
      * to the database to end each database session.
      */
-    private void closeConnection() {
+    private static void closeConnection() {
         try {
             logger.info("Closing JDBC connection");
             getConnection().close();

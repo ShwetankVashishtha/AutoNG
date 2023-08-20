@@ -4,6 +4,8 @@ import io.restassured.response.Response;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.logging.Logger;
+
 /**
  * @author Shwetank Vashishtha
  * @version 1.0.0
@@ -11,6 +13,8 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RestAssertions {
+
+    private static final Logger logger = Logger.getLogger(RestAssertions.class.getName());
 
     /**
      * @param response

@@ -2,7 +2,6 @@ package com.autong.utilities.meta;
 
 import com.autong.base.TestBase;
 import com.autong.utilities.annotations.ElementMeta;
-import com.autong.utilities.meta.LocateUsing;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.openqa.selenium.By;

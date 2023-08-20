@@ -84,4 +84,16 @@ public class ObjectLoader {
                 .filter(f -> f.isAnnotationPresent(WaitForLoad.class)).collect(Collectors.toList());
         applyWaitOnFields(waitForLoadFields);
     }
+
+    private static void waitForElement(Field field, WaitCondition waitCondition) {
+        WebDriverWait wait = new WebDriverWait(TestBase.getDriver(), Duration.ofSeconds(30));
+        switch (waitCondition) {
+            case Visible:
+                wait.until(ExpectedConditions.visibilityOf(ProcessElementMeta.getWebElement(field)));
+            case Clickable:
+                wait.until(ExpectedConditions.elementToBeClickable(ProcessElementMeta.getWebElement(field)));
+            case Invisibility:
+                wait.until(ExpectedConditions.invisibilityOf(ProcessElementMeta.getWebElement(field)));
+        }
+    }
 }

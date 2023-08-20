@@ -1,7 +1,6 @@
 package com.autong.utilities.generator;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import java.util.logging.Logger;
 
 /**
  * @author Shwetank Vashishtha
@@ -9,6 +8,8 @@ import lombok.NoArgsConstructor;
  * @since 2022
  */
 public class GenerateRandomNumber {
+
+    private static final Logger logger = Logger.getLogger(GenerateRandomNumber.class.getName());
 
     public static int generateRandomNum(int min, int max) {
         return (int) Math.floor(Math.random() * (max - min + 1) + min);

@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
  * @version 1.0.0
  * @since 2022
  */
-public class PageBase {
+public class PageBase extends SeleniumFunctions {
 
     /**
      * The driver.

@@ -34,11 +34,5 @@
             <artifactId>rest-assured</artifactId>
             <version>4.5.1</version>
         </dependency>
-        <dependency>
-            <groupId>in.autong.test</groupId>
-            <artifactId>autong-automation-builder</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 </project>

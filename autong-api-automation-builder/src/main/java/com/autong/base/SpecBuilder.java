@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * @author Shwetank Vashishtha
@@ -17,6 +18,8 @@ import java.util.Map;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SpecBuilder {
+
+    private static final Logger logger = Logger.getLogger(SpecBuilder.class.getName());
 
     /**
      * @param username

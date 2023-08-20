@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.File;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
 
@@ -17,6 +18,8 @@ import static io.restassured.RestAssured.given;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RestResources {
+
+    private static final Logger logger = Logger.getLogger(RestResources.class.getName());
 
     /**
      * @param path        accepts request uri

@@ -14,7 +14,7 @@ public class MongoDbConfigs {
 
     static MongoClient mongoClient;
 
-    public static void writeConfigMongoDb() {
+    public static void openConnection() {
         mongoClient = new MongoClient(("MONGODB_URL")
                 + ":"
                 + Integer.parseInt("MONGODB_PORT"));

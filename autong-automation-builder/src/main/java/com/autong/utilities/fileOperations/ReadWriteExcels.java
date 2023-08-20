@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * @author Shwetank Vashishtha
@@ -18,6 +19,7 @@ public class ReadWriteExcels {
     File file;
     FileInputStream fileInputStream;
     XSSFWorkbook xssfWorkbook;
+    private static final Logger logger = Logger.getLogger(ReadWriteExcels.class.getName());
 
     public Object readExcel(String filePath, int sheetIndex, int rowIndex, int columnIndex) throws IOException {
         File file = new File(filePath);

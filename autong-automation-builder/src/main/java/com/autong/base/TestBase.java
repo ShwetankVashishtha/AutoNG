@@ -353,9 +353,11 @@ public class TestBase {
 
     public static void takeScreenshot(String filePath) {
         try {
-            TakesScreenshot takesScreenshot = ((TakesScreenshot) driver);
-            File file = takesScreenshot.getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(file, new File(filePath));
+            if (driver != null) {
+                TakesScreenshot takesScreenshot = ((TakesScreenshot) driver);
+                File file = takesScreenshot.getScreenshotAs(OutputType.FILE);
+                FileUtils.copyFile(file, new File(filePath));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,12 +1,10 @@
 package com.autong.utilities.generator;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * @author Shwetank Vashishtha
@@ -16,6 +14,7 @@ import java.util.Date;
 public final class GenerateRandomDate {
 
     static DateFormat dateFormat;
+    private static final Logger logger = Logger.getLogger(GenerateRandomDate.class.getName());
 
     public static Date getTomorrowDate() {
         Calendar.getInstance().add(Calendar.DAY_OF_YEAR, 1);

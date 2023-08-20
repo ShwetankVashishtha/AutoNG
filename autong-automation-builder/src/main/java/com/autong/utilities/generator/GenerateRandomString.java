@@ -1,6 +1,7 @@
 package com.autong.utilities.generator;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * @author Shwetank Vashishtha
@@ -8,6 +9,8 @@ import java.util.Random;
  * @since 2022
  */
 public class GenerateRandomString {
+
+    private static final Logger logger = Logger.getLogger(GenerateRandomString.class.getName());
 
     public String generateRandomAlphaNumericString() {
         String candidateChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";

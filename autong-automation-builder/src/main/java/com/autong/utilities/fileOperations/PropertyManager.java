@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * @author Shwetank Vashishtha
@@ -12,6 +13,7 @@ import java.util.Properties;
  */
 public class PropertyManager {
 
+    private static final Logger logger = Logger.getLogger(PropertyManager.class.getName());
     public Properties getResourceBundle;
 
     public PropertyManager() {
