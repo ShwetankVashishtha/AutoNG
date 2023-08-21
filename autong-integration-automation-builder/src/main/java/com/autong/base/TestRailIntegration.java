@@ -1,6 +1,5 @@
-package com.autong.integrations;
+package com.autong.base;
 
-import com.autong.base.RestResources;
 import io.restassured.response.Response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

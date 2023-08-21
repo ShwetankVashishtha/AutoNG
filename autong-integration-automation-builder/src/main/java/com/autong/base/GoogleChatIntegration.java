@@ -1,4 +1,4 @@
-package com.autong.integrations;
+package com.autong.base;
 
 import com.google.gson.Gson;
 

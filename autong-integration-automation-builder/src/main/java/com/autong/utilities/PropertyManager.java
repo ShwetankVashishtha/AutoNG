@@ -1,4 +1,4 @@
-package com.autong.utilities.fileOperations;
+package com.autong.utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
