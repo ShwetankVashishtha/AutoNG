@@ -14,12 +14,12 @@ import java.util.logging.Logger;
  * @version 1.0.0
  * @since 2022
  */
-public class ReadWriteExcels {
+public class ExcelParser {
 
     File file;
     FileInputStream fileInputStream;
     XSSFWorkbook xssfWorkbook;
-    private static final Logger logger = Logger.getLogger(ReadWriteExcels.class.getName());
+    private static final Logger logger = Logger.getLogger(ExcelParser.class.getName());
 
     public Object readExcel(String filePath, int sheetIndex, int rowIndex, int columnIndex) throws IOException {
         File file = new File(filePath);
