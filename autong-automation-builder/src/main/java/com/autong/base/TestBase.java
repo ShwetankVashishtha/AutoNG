@@ -4,6 +4,7 @@ import com.autong.utilities.annotations.ElementMeta;
 import com.autong.utilities.annotations.MobileSpecificField;
 import com.autong.utilities.annotations.WebSpecificField;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.NoSuchElementException;
@@ -16,6 +17,9 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -34,6 +38,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -46,18 +51,11 @@ import java.util.stream.Collectors;
 public class TestBase {
 
     private static final Logger logger = Logger.getLogger(TestBase.class.getName());
+    @Getter
     protected static WebDriver driver;
     protected static WebDriver mobileDriver;
     static Actions actions;
     static JavascriptExecutor javascriptExecutor;
-
-    public static WebDriver getDriver() {
-        return driver;
-    }
-
-    public static WebDriver getMobileDriver() {
-        return mobileDriver;
-    }
 
     /**
      * This function initialise browser-specific drivers
@@ -92,6 +90,9 @@ public class TestBase {
                     chromeOptions.addArguments("--remote-allow-origins=*");
                     chromeOptions.setExperimentalOption("prefs", pref);
                     chromeOptions.addArguments("--disable-notifications");
+                    LoggingPreferences logs = new LoggingPreferences();
+                    logs.enable(LogType.BROWSER, Level.ALL);
+                    chromeOptions.setCapability("goog:loggingPrefs", logs);
                     driver = new ChromeDriver(chromeOptions);
                     driver.manage().window().maximize();
                     openURL(URL);
@@ -129,6 +130,34 @@ public class TestBase {
     }
 
     /**
+     * This function helps to determine if web app driver is in opened or closed state
+     * and conclude if an action needs to be performed o discarded
+     *
+     * @return boolean value - true if found web app driver to be active
+     */
+    public static boolean isWebDriverOpen() {
+        if (driver != null) {
+            logger.info("Found open web app driver");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This function helps to determine if mobile app driver is in opened or closed state
+     * and conclude if an action needs to be performed o discarded
+     *
+     * @return boolean value - true if found mobile app driver to be active
+     */
+    public static boolean isMobileDriverOpen() {
+        if (driver != null) {
+            logger.info("Found open mobile app driver");
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * This function passes application url in opened browser window
      * and implicitly wait for page to load
      *
@@ -152,7 +181,7 @@ public class TestBase {
      * @return boolean value
      */
     public static boolean isWeb() {
-        if (driver != null) {
+        if (isWebDriverOpen()) {
             return true;
         } else {
             logger.info("No web app open session found!");
@@ -166,7 +195,7 @@ public class TestBase {
      * @return boolean value
      */
     public static boolean isMobile() {
-        if (mobileDriver != null) {
+        if (isMobileDriverOpen()) {
             return true;
         } else {
             logger.info("No mobile app open session found!");
@@ -179,7 +208,7 @@ public class TestBase {
      * Given that driver value isn't null
      */
     public static void closeCurrentSession() {
-        if (driver != null) {
+        if (isWebDriverOpen()) {
             driver.close();
         } else {
             logger.info("No web app open session found!");
@@ -191,11 +220,11 @@ public class TestBase {
      * Given that driver value isn't null
      */
     public static void closeActiveSessions() {
-        if (driver != null) {
+        if (isWebDriverOpen()) {
             driver.manage().deleteAllCookies();
             driver.quit();
         } else {
-            logger.info("No open session found!");
+            logger.info("No web app open session found!");
         }
     }
 
@@ -204,10 +233,10 @@ public class TestBase {
      * Given that driver value isn't null
      */
     public static void openCurrentBrowserInstance() {
-        if (driver != null) {
+        if (isWebDriverOpen()) {
             driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "n");
         } else {
-            logger.info("No open session found!");
+            logger.info("No web app open session found!");
         }
     }
 
@@ -216,13 +245,28 @@ public class TestBase {
      * Given that driver value isn't null
      */
     public static void openNewBrowserTab() {
-        if (driver != null) {
+        if (isWebDriverOpen()) {
             driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "t");
         } else {
-            logger.info("No open session found!");
+            logger.info("No web app open session found!");
         }
     }
 
+    /**
+     * This function sets browser activity logs into centralised logger controller
+     * and could be utilised in analysing failures
+     * <p>
+     *
+     * @return LogEntries as a list
+     */
+    public static LogEntries setLogger() {
+        if (isWebDriverOpen()) {
+            return TestBase.getDriver().manage().logs().get(LogType.BROWSER);
+        } else {
+            logger.info("No web app open session found!");
+        }
+        return null;
+    }
 
     /**
      * This function puts execution at sleep for specified halt time

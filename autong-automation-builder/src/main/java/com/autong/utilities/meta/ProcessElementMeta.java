@@ -23,25 +23,16 @@ import static org.junit.Assert.fail;
 public class ProcessElementMeta {
 
     public static WebElement getWebElement(LocateUsing locatedBy, String value) {
-        switch (locatedBy) {
-            case ID:
-                return TestBase.getDriver().findElement(By.id(value));
-            case CSS:
-                return TestBase.getDriver().findElement(By.cssSelector(value));
-            case XPATH:
-                return TestBase.getDriver().findElement(By.xpath(value));
-            case PARTIAL_TEXT:
-                return TestBase.getDriver().findElement(By.partialLinkText(value));
-            case CLASS:
-                return TestBase.getDriver().findElement(By.className(value));
-            case LINK_TEXT:
-                return TestBase.getDriver().findElement(By.linkText(value));
-            case TAG_NAME:
-                return TestBase.getDriver().findElement(By.tagName(value));
-            default:
-            case NAME:
-                return TestBase.getDriver().findElement(By.name(value));
-        }
+        return switch (locatedBy) {
+            case ID -> TestBase.getDriver().findElement(By.id(value));
+            case CSS -> TestBase.getDriver().findElement(By.cssSelector(value));
+            case XPATH -> TestBase.getDriver().findElement(By.xpath(value));
+            case PARTIAL_TEXT -> TestBase.getDriver().findElement(By.partialLinkText(value));
+            case CLASS -> TestBase.getDriver().findElement(By.className(value));
+            case LINK_TEXT -> TestBase.getDriver().findElement(By.linkText(value));
+            case TAG_NAME -> TestBase.getDriver().findElement(By.tagName(value));
+            default -> TestBase.getDriver().findElement(By.name(value));
+        };
     }
 
     public static WebElement getWebElement(Field f) {

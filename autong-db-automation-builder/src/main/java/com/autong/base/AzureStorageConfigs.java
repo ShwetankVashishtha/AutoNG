@@ -41,6 +41,24 @@ public class AzureStorageConfigs {
         return rows;
     }
 
+    public static List<Object> retrieveRowKeys(String connectionString, String tableName) {
+        List<Object> rows = new ArrayList<Object>();
+        try {
+            TableClient tableClient = new TableClientBuilder()
+                    .connectionString(connectionString)
+                    .tableName(tableName)
+                    .buildClient();
+            ListEntitiesOptions options = new ListEntitiesOptions();
+            tableClient.listEntities(options, null, null).forEach(tableEntity -> {
+                rowValue = tableEntity.getRowKey();
+                rows.add(rowValue);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rows;
+    }
+
     public static List<Object> retrieveColumnData(String connectionString, String tableName, String columnName, String propertyAddressId) {
         List<Object> columnEntries = new ArrayList<Object>();
         try {
@@ -106,7 +124,7 @@ public class AzureStorageConfigs {
         StopWatch watch = new StopWatch();
         watch.start();
         logger.info("\nUploading to Blob storage as blob:\n\t" + blobClient.getBlobUrl());
-        blobClient.uploadFromFile(filePath);
+        blobClient.uploadFromFile(filePath, true);
         watch.stop();
         logger.info("Time Elapsed: " + watch.getTime());
     }
