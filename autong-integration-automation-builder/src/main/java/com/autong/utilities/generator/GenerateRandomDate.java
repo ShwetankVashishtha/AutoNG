@@ -21,8 +21,8 @@ public final class GenerateRandomDate {
         return Calendar.getInstance().getTime();
     }
 
-    public static String getFormattedDate(Date date, String pattern) {
+    public static String getFormattedDate(String pattern) {
         dateFormat = new SimpleDateFormat(pattern);
-        return dateFormat.format(date);
+        return dateFormat.toString();
     }
 }

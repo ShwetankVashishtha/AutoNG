@@ -23,14 +23,14 @@ public class AzureStorageConfigs {
     private static final Logger logger = Logger.getLogger(AzureStorageConfigs.class.getName());
     static Object columnValue, rowValue;
 
-    public static List<Object> retrieveRowKeys(String connectionString, String tableName, String propertyAddressId) {
+    public static List<Object> retrieveRowKeys(String connectionString, String tableName, String queryField, String queryValue) {
         List<Object> rows = new ArrayList<Object>();
         try {
             TableClient tableClient = new TableClientBuilder()
                     .connectionString(connectionString)
                     .tableName(tableName)
                     .buildClient();
-            ListEntitiesOptions options = new ListEntitiesOptions().setFilter("PartitionKey" + " eq '" + propertyAddressId + "'");
+            ListEntitiesOptions options = new ListEntitiesOptions().setFilter(queryField + " eq '" + queryValue + "'");
             tableClient.listEntities(options, null, null).forEach(tableEntity -> {
                 rowValue = tableEntity.getRowKey();
                 rows.add(rowValue);

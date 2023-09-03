@@ -150,7 +150,7 @@ public class TestBase {
      * @return boolean value - true if found mobile app driver to be active
      */
     public static boolean isMobileDriverOpen() {
-        if (driver != null) {
+        if (mobileDriver != null) {
             logger.info("Found open mobile app driver");
             return true;
         }
@@ -326,8 +326,16 @@ public class TestBase {
         new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.textToBePresentInElement(element, text));
     }
 
-    public static void waitForPageTitle(long timeout, String pageTitle) {
-        new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.titleIs(pageTitle));
+    public static boolean waitForPageTitle(long timeout, String pageTitle) {
+        boolean pageTitleStatus = false;
+        try {
+            if (new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.titleIs(pageTitle))) {
+                pageTitleStatus = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pageTitleStatus;
     }
 
     public static void frameToBeAvailableAndSwitch(long timeout, String frameID) {
