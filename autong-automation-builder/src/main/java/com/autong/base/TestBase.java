@@ -51,8 +51,7 @@ import java.util.stream.Collectors;
 public class TestBase {
 
     private static final Logger logger = Logger.getLogger(TestBase.class.getName());
-    @Getter
-    protected static WebDriver driver;
+    @Getter protected static WebDriver driver;
     protected static WebDriver mobileDriver;
     static Actions actions;
     static JavascriptExecutor javascriptExecutor;
@@ -89,7 +88,90 @@ public class TestBase {
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--remote-allow-origins=*");
                     chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-popup-blocking");
+                    chromeOptions.addArguments("--allow-file-access-from-files");
+                    chromeOptions.addArguments("--allow-file-access");
                     chromeOptions.addArguments("--disable-notifications");
+                    LoggingPreferences logs = new LoggingPreferences();
+                    logs.enable(LogType.BROWSER, Level.ALL);
+                    chromeOptions.setCapability("goog:loggingPrefs", logs);
+                    driver = new ChromeDriver(chromeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("safari")) {
+                    SafariOptions safariOptions = new SafariOptions();
+                    driver = new SafariDriver(safariOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                }
+            } else if (System.getProperty("os.name").startsWith("Windows")) {
+                if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
+                    driver = new EdgeDriver();
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    driver = new FirefoxDriver(firefoxOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("chrome")) {
+                    Map<String, Object> pref = new HashMap<>();
+                    pref.put("profile.default_content_setting_values.notifications", 2);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-notifications");
+                    driver = new ChromeDriver(chromeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                }
+            }
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+    }
+
+    /**
+     * This function initialise browser-specific drivers
+     * and opens a web url in selected browser with maximized browser window
+     * <p>
+     * Supported browsers: Chrome, Firefox, IE Edge, Safari
+     * Supported OS: Mac OS-X and Windows
+     * <p>
+     * Post browser initialization, function further executes to maximize browser window
+     * pointing to {@link #setupBrowser(String, String, String)}
+     *
+     * @param browser       execution browser name
+     * @param URL           web app url
+     * @param audioFilePath accepts .wav audio file
+     */
+    public static void setupBrowser(String browser, String URL, String audioFilePath) {
+        try {
+            if (System.getProperty("os.name").startsWith("Mac")) {
+                if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    driver = new EdgeDriver(edgeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    driver = new FirefoxDriver(firefoxOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("chrome")) {
+                    Map<String, Object> pref = new HashMap<>();
+                    pref.put("profile.default_content_setting_values.notifications", 2);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-popup-blocking");
+                    chromeOptions.addArguments("--no-sandbox");
+                    chromeOptions.addArguments("--allow-file-access-from-files");
+                    chromeOptions.addArguments("--allow-file-access");
+                    chromeOptions.addArguments("--disable-notifications");
+                    chromeOptions.addArguments("--use-fake-ui-for-media-stream");
+                    chromeOptions.addArguments("--use-fake-device-for-media-stream");
+                    chromeOptions.addArguments("--use-file-for-fake-audio-capture=" + audioFilePath);
                     LoggingPreferences logs = new LoggingPreferences();
                     logs.enable(LogType.BROWSER, Level.ALL);
                     chromeOptions.setCapability("goog:loggingPrefs", logs);
