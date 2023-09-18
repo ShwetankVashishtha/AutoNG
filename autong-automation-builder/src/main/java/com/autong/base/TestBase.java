@@ -139,13 +139,13 @@ public class TestBase {
      * Supported OS: Mac OS-X and Windows
      * <p>
      * Post browser initialization, function further executes to maximize browser window
-     * pointing to {@link #setupBrowser(String, String, String)}
+     * pointing to {@link #setupBrowser(String, String, String, String)}
      *
      * @param browser       execution browser name
      * @param URL           web app url
      * @param audioFilePath accepts .wav audio file
      */
-    public static void setupBrowser(String browser, String URL, String audioFilePath) {
+    public static void setupBrowser(String browser, String URL, String audioFilePath, String videoFilePath) {
         try {
             if (System.getProperty("os.name").startsWith("Mac")) {
                 if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
@@ -165,6 +165,7 @@ public class TestBase {
                     chromeOptions.addArguments("--remote-allow-origins=*");
                     chromeOptions.setExperimentalOption("prefs", pref);
                     chromeOptions.addArguments("--disable-popup-blocking");
+                    chromeOptions.addArguments("--disable-infobars");
                     chromeOptions.addArguments("--no-sandbox");
                     chromeOptions.addArguments("--allow-file-access-from-files");
                     chromeOptions.addArguments("--allow-file-access");
@@ -172,6 +173,7 @@ public class TestBase {
                     chromeOptions.addArguments("--use-fake-ui-for-media-stream");
                     chromeOptions.addArguments("--use-fake-device-for-media-stream");
                     chromeOptions.addArguments("--use-file-for-fake-audio-capture=" + audioFilePath);
+                    chromeOptions.addArguments("--use-file-for-fake-video-capture=" + videoFilePath);
                     LoggingPreferences logs = new LoggingPreferences();
                     logs.enable(LogType.BROWSER, Level.ALL);
                     chromeOptions.setCapability("goog:loggingPrefs", logs);
