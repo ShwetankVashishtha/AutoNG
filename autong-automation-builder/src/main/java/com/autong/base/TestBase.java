@@ -139,6 +139,83 @@ public class TestBase {
      * Supported OS: Mac OS-X and Windows
      * <p>
      * Post browser initialization, function further executes to maximize browser window
+     * pointing to {@link #setupBrowser(String, String, String)}
+     *
+     * @param browser execution browser name
+     * @param URL     web app url
+     */
+    public static void setupBrowser(String browser, String URL, String locale) {
+        try {
+            if (System.getProperty("os.name").startsWith("Mac")) {
+                if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    driver = new EdgeDriver(edgeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    driver = new FirefoxDriver(firefoxOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("chrome")) {
+                    Map<String, Object> pref = new HashMap<>();
+                    pref.put("profile.default_content_setting_values.notifications", 2);
+                    pref.put("intl.accept_languages", locale);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-popup-blocking");
+                    chromeOptions.addArguments("--allow-file-access-from-files");
+                    chromeOptions.addArguments("--allow-file-access");
+                    chromeOptions.addArguments("--disable-notifications");
+                    LoggingPreferences logs = new LoggingPreferences();
+                    logs.enable(LogType.BROWSER, Level.ALL);
+                    chromeOptions.setCapability("goog:loggingPrefs", logs);
+                    driver = new ChromeDriver(chromeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("safari")) {
+                    SafariOptions safariOptions = new SafariOptions();
+                    driver = new SafariDriver(safariOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                }
+            } else if (System.getProperty("os.name").startsWith("Windows")) {
+                if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
+                    driver = new EdgeDriver();
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    driver = new FirefoxDriver(firefoxOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("chrome")) {
+                    Map<String, Object> pref = new HashMap<>();
+                    pref.put("profile.default_content_setting_values.notifications", 2);
+                    pref.put("intl.accept_languages", locale);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-notifications");
+                    driver = new ChromeDriver(chromeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                }
+            }
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+    }
+
+    /**
+     * This function initialise browser-specific drivers
+     * and opens a web url in selected browser with maximized browser window
+     * <p>
+     * Supported browsers: Chrome, Firefox, IE Edge, Safari
+     * Supported OS: Mac OS-X and Windows
+     * <p>
+     * Post browser initialization, function further executes to maximize browser window
      * pointing to {@link #setupBrowser(String, String, String, String)}
      *
      * @param browser       execution browser name
@@ -345,7 +422,7 @@ public class TestBase {
      */
     public static LogEntries setLogger() {
         if (isWebDriverOpen()) {
-            return TestBase.getDriver().manage().logs().get(LogType.BROWSER);
+            return driver.manage().logs().get(LogType.BROWSER);
         } else {
             logger.info("No web app open session found!");
         }
