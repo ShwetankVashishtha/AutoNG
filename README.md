@@ -1,5 +1,5 @@
 # AutoNG Application Automation Platform
-<img src="https://media.licdn.com/dms/image/D4D16AQEYgS7rSyJU0A/profile-displaybackgroundimage-shrink_350_1400/0/1670424384589?e=1697673600&v=beta&t=xlJLcMqqkFLacAIGQ5Z-5Si9D_pRm9HtnZm7l3he4Cg" alt="AutoNG" width="800" height="200">
+<img src="[https://media.licdn.com/dms/image/D4D16AQEYgS7rSyJU0A/profile-displaybackgroundimage-shrink_350_1400/0/1670424384589?e=1697673600&v=beta&t=xlJLcMqqkFLacAIGQ5Z-5Si9D_pRm9HtnZm7l3he4Cg](https://1drv.ms/i/s!AsCpcVoEAJfcmmkeBEb7402V0UMO?e=NQP9Io)" alt="AutoNG" width="800" height="200">
 
 # Features and Functionalities
 
