@@ -1,5 +1,4 @@
 # AutoNG Application Automation Platform
-<img src="https://qa-fiction.com/wp-content/uploads/2022/07/Autong-logo-1-scaled.jpg" alt="AutoNG" width="800" height="300">
 
 # Features and Functionalities
 
