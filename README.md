@@ -70,7 +70,7 @@
 
 # Integration with CI/CD
 
-Please walk through corresponding <a href="https://github.com/ShwetankVashishtha/DSLs/blob/main/jenkins_autong.dsl">Jenkins DSL</a> written in Groovy to integrate continuous builds with pipeline for your end-to-end tests.
+Please walk through corresponding <a href="https://github.com/ShwetankVashishtha/DSLs/blob/main/autong.dsl">Jenkins DSL</a> written in Groovy to integrate continuous builds with pipeline for your end-to-end tests.
 
 
 # Documentation & Tutorials
