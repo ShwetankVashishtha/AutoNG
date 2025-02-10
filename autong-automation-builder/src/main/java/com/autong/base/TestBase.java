@@ -3,6 +3,9 @@ package com.autong.base;
 import com.autong.utilities.annotations.ElementMeta;
 import com.autong.utilities.annotations.MobileSpecificField;
 import com.autong.utilities.annotations.WebSpecificField;
+
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.options.UiAutomator2Options;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,8 +54,11 @@ import java.util.stream.Collectors;
 public class TestBase {
 
     private static final Logger logger = Logger.getLogger(TestBase.class.getName());
-    @Getter protected static WebDriver driver;
+    @Getter
+    protected static WebDriver driver;
     protected static WebDriver mobileDriver;
+    @Getter
+    protected static AndroidDriver androidDriver;
     static Actions actions;
     static JavascriptExecutor javascriptExecutor;
 
@@ -63,7 +69,8 @@ public class TestBase {
      * Supported browsers: Chrome, Firefox, IE Edge, Safari
      * Supported OS: Mac OS-X and Windows
      * <p>
-     * Post browser initialization, function further executes to maximize browser window
+     * Post browser initialization, function further executes to maximize browser
+     * window
      * pointing to {@link #setupBrowser(String, String)}
      *
      * @param browser execution browser name
@@ -138,7 +145,8 @@ public class TestBase {
      * Supported browsers: Chrome, Firefox, IE Edge, Safari
      * Supported OS: Mac OS-X and Windows
      * <p>
-     * Post browser initialization, function further executes to maximize browser window
+     * Post browser initialization, function further executes to maximize browser
+     * window
      * pointing to {@link #setupBrowser(String, String, String)}
      *
      * @param browser execution browser name
@@ -215,7 +223,8 @@ public class TestBase {
      * Supported browsers: Chrome, Firefox, IE Edge, Safari
      * Supported OS: Mac OS-X and Windows
      * <p>
-     * Post browser initialization, function further executes to maximize browser window
+     * Post browser initialization, function further executes to maximize browser
+     * window
      * pointing to {@link #setupBrowser(String, String, String, String)}
      *
      * @param browser       execution browser name
@@ -290,8 +299,37 @@ public class TestBase {
         }
     }
 
+    public static void setUpAndroidDevice(String deviceName, String androidVersion,
+            String packageName, String activityName, String hubURL) {
+        try {
+            // Define capabilities using UiAutomator2Options
+            UiAutomator2Options options = new UiAutomator2Options();
+            options.setPlatformName("Android"); // Set platform
+            options.setPlatformVersion(androidVersion); // Update with your Android version
+            options.setDeviceName(deviceName); // Use the device name from `adb devices`
+            options.setAutomationName("UiAutomator2"); // Specify automation framework
+            // options.setApp("/path/to/your/app.apk"); // Uncomment and provide APK path if
+            // needed
+            options.setAppPackage(packageName); // App package name
+            options.setAppActivity(activityName); // Main activity of the app
+            options.setNoReset(true); // Retain app data between sessions
+            // Initialize the AndroidDriver
+            androidDriver = new AndroidDriver(new URL(hubURL), options);
+
+            // Example Interaction: Get App Package
+            System.out.println("App Package: " + androidDriver.getCapabilities().getCapability("appPackage"));
+
+            Thread.sleep(20000);
+
+        } catch (MalformedURLException | InterruptedException e) {
+            System.out.println("Session not created. Something went wrong " + e);
+            e.printStackTrace();
+        }
+    }
+
     /**
-     * This function helps to determine if web app driver is in opened or closed state
+     * This function helps to determine if web app driver is in opened or closed
+     * state
      * and conclude if an action needs to be performed o discarded
      *
      * @return boolean value - true if found web app driver to be active
@@ -305,7 +343,8 @@ public class TestBase {
     }
 
     /**
-     * This function helps to determine if mobile app driver is in opened or closed state
+     * This function helps to determine if mobile app driver is in opened or closed
+     * state
      * and conclude if an action needs to be performed o discarded
      *
      * @return boolean value - true if found mobile app driver to be active
@@ -484,7 +523,8 @@ public class TestBase {
     }
 
     public static void waitForTextToBePresentInElement(long timeout, WebElement element, String text) {
-        new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.textToBePresentInElement(element, text));
+        new WebDriverWait(driver, Duration.ofSeconds(timeout))
+                .until(ExpectedConditions.textToBePresentInElement(element, text));
     }
 
     public static boolean waitForPageTitle(long timeout, String pageTitle) {
@@ -500,7 +540,8 @@ public class TestBase {
     }
 
     public static void frameToBeAvailableAndSwitch(long timeout, String frameID) {
-        new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id(frameID)));
+        new WebDriverWait(driver, Duration.ofSeconds(timeout))
+                .until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id(frameID)));
     }
 
     public static void scrollToBottom() {
@@ -551,7 +592,8 @@ public class TestBase {
         actions = new Actions(driver);
         Rectangle start = fromElement.getRect();
         Rectangle finish = toElement.getRect();
-        actions.dragAndDropBy(fromElement, finish.getX() - start.getX(), finish.getY() - start.getY()).build().perform();
+        actions.dragAndDropBy(fromElement, finish.getX() - start.getX(), finish.getY() - start.getY()).build()
+                .perform();
     }
 
     public static void pressEnterKey() {
@@ -670,6 +712,49 @@ public class TestBase {
                     .filter(field -> field.isAnnotationPresent(ElementMeta.class) &&
                             !field.isAnnotationPresent(MobileSpecificField.class))
                     .collect(Collectors.toList());
+        }
+    }
+
+    // Getter method for returning the AndroidDriver instance
+    public static AndroidDriver getAndroidDriver() {
+        return androidDriver; // Returns the current instance of the AndroidDriver
+    }
+
+    // Method to wait for an element to be visible on the screen
+    public static void waitForElementToBeVisible(long timeout, WebElement element) {
+        try {
+            // Wait until the element becomes visible or the timeout is reached
+            (new WebDriverWait(androidDriver, Duration.ofSeconds(timeout)))
+                    .until(ExpectedConditions.visibilityOf(element));
+        } catch (Exception e) {
+            // If the element is not visible within the specified timeout, throw a
+            // RuntimeException
+            throw new RuntimeException(e.toString());
+        }
+    }
+
+    // Method to wait for an element to disappear from the screen
+    public static void waitForAndElementDisappear(long timeout, WebElement element) {
+        try {
+            // Wait until the element becomes invisible or the timeout is reached
+            (new WebDriverWait(androidDriver, Duration.ofSeconds(timeout)))
+                    .until(ExpectedConditions.invisibilityOf(element));
+        } catch (Exception e) {
+            // If the element is still visible after the timeout, throw a RuntimeException
+            throw new RuntimeException(e.toString());
+        }
+    }
+
+    // Method to wait for an element to be clickable
+    public static void waitForAndElementToBeClickable(long timeout, WebElement element) {
+        try {
+            // Wait until the element becomes clickable or the timeout is reached
+            (new WebDriverWait(androidDriver, Duration.ofSeconds(timeout)))
+                    .until(ExpectedConditions.elementToBeClickable(element));
+        } catch (Exception e) {
+            // If the element is not clickable within the specified timeout, throw a
+            // RuntimeException
+            throw new RuntimeException(e.toString());
         }
     }
 }

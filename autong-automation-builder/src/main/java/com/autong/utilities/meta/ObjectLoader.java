@@ -22,62 +22,72 @@ import static org.junit.Assert.fail;
 /**
  * @author Shwetank Vashishtha
  * @version 1.0.0
- * @since 2023
+ * @since 2022
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ObjectLoader {
 
     /**
-     * This function returns the first occurrence of method @ObjectLoadMeta depending on the platform where the portal was opened.
+     * This function returns the first occurrence of method @ObjectLoadMeta
+     * depending on the platform where the portal was opened.
      *
-     * @param methods   These are the declared methods in a given base page component.
-     * @param className This is the name of the class passed to the function to throw <br> relevant error message.
+     * @param methods   These are the declared methods in a given base page
+     *                  component.
+     * @param className This is the name of the class passed to the function to
+     *                  throw <br>
+     *                  relevant error message.
      * @return It returns the Method annotated with @ObjectLoadMeta.
      * @author Shwetank Vashishtha
      */
-    private static Method getObjectLoaderMethod(Method[] methods, String className) {
+    public static Method getObjectLoaderMethod(Method[] methods, String className) {
         boolean isMobile = TestBase.isMobile();
-        Method method = (isMobile) ?
-                Arrays.stream(methods)
-                        .filter(m -> m.isAnnotationPresent(ObjectLoaderMeta.class) &&
-                                !m.getAnnotation(ObjectLoaderMeta.class).platform().equals(Platform.WEB))
-                        .findFirst()
-                        .orElse(null)
-                :
-                Arrays.stream(methods)
+        Method method = (isMobile) ? Arrays.stream(methods)
+                .filter(m -> m.isAnnotationPresent(ObjectLoaderMeta.class) &&
+                        !m.getAnnotation(ObjectLoaderMeta.class).platform().equals(Platform.WEB))
+                .findFirst()
+                .orElse(null)
+                : Arrays.stream(methods)
                         .filter(m -> m.isAnnotationPresent(ObjectLoaderMeta.class) &&
                                 !m.getAnnotation(ObjectLoaderMeta.class).platform().equals(Platform.MOBILE))
                         .findFirst()
                         .orElse(null);
         String platform = (isMobile) ? "MOBILE" : "WEB";
-        if (method == null) fail("Object Loader not found for the " + platform + " platform in the class" + className);
+        if (method == null)
+            fail("Object Loader not found for the " + platform + " platform in the class" + className);
         return method;
     }
 
     /**
-     * A page component is said to be loaded in browser in case all its fields are loaded successfully.
+     * A page component is said to be loaded in browser in case all its fields are
+     * loaded successfully.
      * This function validates the same and is used
      *
      * @param fieldList It is the list of the fields in the Page Component
      * @author Shwetank Vashishtha
      */
-    private static void applyWaitOnFields(List<Field> fieldList) {
+    public static void applyWaitOnFields(List<Field> fieldList) {
         for (Field field : fieldList) {
             WebElement element = ProcessElementMeta.getWebElement(field);
             assert element != null;
-            new WebDriverWait(TestBase.getDriver(), Duration.ofSeconds(30)).until(ExpectedConditions.visibilityOf(element));
+            new WebDriverWait(TestBase.getDriver(), Duration.ofSeconds(30))
+                    .until(ExpectedConditions.visibilityOf(element));
         }
     }
 
     /**
-     * This function is used by the ObjectLoader to wait for the page component to load.
+     * This function is used by the ObjectLoader to wait for the page component to
+     * load.
      *
-     * @param objectClass This is the class for the page component on which wait needs to be applied.
-     * @throws NoSuchMethodException  - Throws when class is missing a No Arguments Constructor.
-     * @throws IllegalAccessException - Throws when No Arguments Constructor is not set to public.
+     * @param objectClass This is the class for the page component on which wait
+     *                    needs to be applied.
+     * @throws NoSuchMethodException  - Throws when class is missing a No Arguments
+     *                                Constructor.
+     * @throws IllegalAccessException - Throws when No Arguments Constructor is not
+     *                                set to public.
      * @author Shwetank Vashishtha
      */
-    private static void waitForObjectToLoad(Class<?> objectClass) throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public static void waitForObjectToLoad(Class<?> objectClass)
+            throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         Object object = objectClass.getDeclaredConstructor().newInstance();
         List<Field> allFields = TestBase.getFieldsForPlatform(object);
         List<Field> waitForLoadFields = allFields.stream()
@@ -85,7 +95,7 @@ public class ObjectLoader {
         applyWaitOnFields(waitForLoadFields);
     }
 
-    private static void waitForElement(Field field, WaitCondition waitCondition) {
+    public static void waitForElement(Field field, WaitCondition waitCondition) {
         WebDriverWait wait = new WebDriverWait(TestBase.getDriver(), Duration.ofSeconds(30));
         switch (waitCondition) {
             case Visible:
