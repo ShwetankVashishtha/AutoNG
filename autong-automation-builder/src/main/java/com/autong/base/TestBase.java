@@ -3,7 +3,11 @@ package com.autong.base;
 import com.autong.utilities.annotations.ElementMeta;
 import com.autong.utilities.annotations.MobileSpecificField;
 import com.autong.utilities.annotations.WebSpecificField;
+
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.options.UiAutomator2Options;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.NoSuchElementException;
@@ -16,6 +20,9 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -34,6 +41,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -46,18 +54,13 @@ import java.util.stream.Collectors;
 public class TestBase {
 
     private static final Logger logger = Logger.getLogger(TestBase.class.getName());
+    @Getter
     protected static WebDriver driver;
     protected static WebDriver mobileDriver;
+    @Getter
+    protected static AndroidDriver androidDriver;
     static Actions actions;
     static JavascriptExecutor javascriptExecutor;
-
-    public static WebDriver getDriver() {
-        return driver;
-    }
-
-    public static WebDriver getMobileDriver() {
-        return mobileDriver;
-    }
 
     /**
      * This function initialise browser-specific drivers
@@ -66,7 +69,8 @@ public class TestBase {
      * Supported browsers: Chrome, Firefox, IE Edge, Safari
      * Supported OS: Mac OS-X and Windows
      * <p>
-     * Post browser initialization, function further executes to maximize browser window
+     * Post browser initialization, function further executes to maximize browser
+     * window
      * pointing to {@link #setupBrowser(String, String)}
      *
      * @param browser execution browser name
@@ -91,7 +95,174 @@ public class TestBase {
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--remote-allow-origins=*");
                     chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-popup-blocking");
+                    chromeOptions.addArguments("--allow-file-access-from-files");
+                    chromeOptions.addArguments("--allow-file-access");
                     chromeOptions.addArguments("--disable-notifications");
+                    LoggingPreferences logs = new LoggingPreferences();
+                    logs.enable(LogType.BROWSER, Level.ALL);
+                    chromeOptions.setCapability("goog:loggingPrefs", logs);
+                    driver = new ChromeDriver(chromeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("safari")) {
+                    SafariOptions safariOptions = new SafariOptions();
+                    driver = new SafariDriver(safariOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                }
+            } else if (System.getProperty("os.name").startsWith("Windows")) {
+                if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
+                    driver = new EdgeDriver();
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    driver = new FirefoxDriver(firefoxOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("chrome")) {
+                    Map<String, Object> pref = new HashMap<>();
+                    pref.put("profile.default_content_setting_values.notifications", 2);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-notifications");
+                    driver = new ChromeDriver(chromeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                }
+            }
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+    }
+
+    /**
+     * This function initialise browser-specific drivers
+     * and opens a web url in selected browser with maximized browser window
+     * <p>
+     * Supported browsers: Chrome, Firefox, IE Edge, Safari
+     * Supported OS: Mac OS-X and Windows
+     * <p>
+     * Post browser initialization, function further executes to maximize browser
+     * window
+     * pointing to {@link #setupBrowser(String, String, String)}
+     *
+     * @param browser execution browser name
+     * @param URL     web app url
+     */
+    public static void setupBrowser(String browser, String URL, String locale) {
+        try {
+            if (System.getProperty("os.name").startsWith("Mac")) {
+                if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    driver = new EdgeDriver(edgeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    driver = new FirefoxDriver(firefoxOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("chrome")) {
+                    Map<String, Object> pref = new HashMap<>();
+                    pref.put("profile.default_content_setting_values.notifications", 2);
+                    pref.put("intl.accept_languages", locale);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-popup-blocking");
+                    chromeOptions.addArguments("--allow-file-access-from-files");
+                    chromeOptions.addArguments("--allow-file-access");
+                    chromeOptions.addArguments("--disable-notifications");
+                    LoggingPreferences logs = new LoggingPreferences();
+                    logs.enable(LogType.BROWSER, Level.ALL);
+                    chromeOptions.setCapability("goog:loggingPrefs", logs);
+                    driver = new ChromeDriver(chromeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("safari")) {
+                    SafariOptions safariOptions = new SafariOptions();
+                    driver = new SafariDriver(safariOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                }
+            } else if (System.getProperty("os.name").startsWith("Windows")) {
+                if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
+                    driver = new EdgeDriver();
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    driver = new FirefoxDriver(firefoxOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("chrome")) {
+                    Map<String, Object> pref = new HashMap<>();
+                    pref.put("profile.default_content_setting_values.notifications", 2);
+                    pref.put("intl.accept_languages", locale);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-notifications");
+                    driver = new ChromeDriver(chromeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                }
+            }
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+    }
+
+    /**
+     * This function initialise browser-specific drivers
+     * and opens a web url in selected browser with maximized browser window
+     * <p>
+     * Supported browsers: Chrome, Firefox, IE Edge, Safari
+     * Supported OS: Mac OS-X and Windows
+     * <p>
+     * Post browser initialization, function further executes to maximize browser
+     * window
+     * pointing to {@link #setupBrowser(String, String, String, String)}
+     *
+     * @param browser       execution browser name
+     * @param URL           web app url
+     * @param audioFilePath accepts .wav audio file
+     */
+    public static void setupBrowser(String browser, String URL, String audioFilePath, String videoFilePath) {
+        try {
+            if (System.getProperty("os.name").startsWith("Mac")) {
+                if (browser.equalsIgnoreCase("ie") || browser.equalsIgnoreCase("edge")) {
+                    EdgeOptions edgeOptions = new EdgeOptions();
+                    driver = new EdgeDriver(edgeOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("firefox") || browser.equalsIgnoreCase("ff")) {
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    driver = new FirefoxDriver(firefoxOptions);
+                    driver.manage().window().maximize();
+                    openURL(URL);
+                } else if (browser.equalsIgnoreCase("chrome")) {
+                    Map<String, Object> pref = new HashMap<>();
+                    pref.put("profile.default_content_setting_values.notifications", 2);
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.setExperimentalOption("prefs", pref);
+                    chromeOptions.addArguments("--disable-popup-blocking");
+                    chromeOptions.addArguments("--disable-infobars");
+                    chromeOptions.addArguments("--no-sandbox");
+                    chromeOptions.addArguments("--allow-file-access-from-files");
+                    chromeOptions.addArguments("--allow-file-access");
+                    chromeOptions.addArguments("--disable-notifications");
+                    chromeOptions.addArguments("--use-fake-ui-for-media-stream");
+                    chromeOptions.addArguments("--use-fake-device-for-media-stream");
+                    chromeOptions.addArguments("--use-file-for-fake-audio-capture=" + audioFilePath);
+                    chromeOptions.addArguments("--use-file-for-fake-video-capture=" + videoFilePath);
+                    LoggingPreferences logs = new LoggingPreferences();
+                    logs.enable(LogType.BROWSER, Level.ALL);
+                    chromeOptions.setCapability("goog:loggingPrefs", logs);
                     driver = new ChromeDriver(chromeOptions);
                     driver.manage().window().maximize();
                     openURL(URL);
@@ -128,6 +299,64 @@ public class TestBase {
         }
     }
 
+    public static void setUpAndroidDevice(String deviceName, String androidVersion,
+            String packageName, String activityName, String hubURL) {
+        try {
+            // Define capabilities using UiAutomator2Options
+            UiAutomator2Options options = new UiAutomator2Options();
+            options.setPlatformName("Android"); // Set platform
+            options.setPlatformVersion(androidVersion); // Update with your Android version
+            options.setDeviceName(deviceName); // Use the device name from `adb devices`
+            options.setAutomationName("UiAutomator2"); // Specify automation framework
+            // options.setApp("/path/to/your/app.apk"); // Uncomment and provide APK path if
+            // needed
+            options.setAppPackage(packageName); // App package name
+            options.setAppActivity(activityName); // Main activity of the app
+            options.setNoReset(true); // Retain app data between sessions
+            // Initialize the AndroidDriver
+            androidDriver = new AndroidDriver(new URL(hubURL), options);
+
+            // Example Interaction: Get App Package
+            System.out.println("App Package: " + androidDriver.getCapabilities().getCapability("appPackage"));
+
+            Thread.sleep(20000);
+
+        } catch (MalformedURLException | InterruptedException e) {
+            System.out.println("Session not created. Something went wrong " + e);
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This function helps to determine if web app driver is in opened or closed
+     * state
+     * and conclude if an action needs to be performed o discarded
+     *
+     * @return boolean value - true if found web app driver to be active
+     */
+    public static boolean isWebDriverOpen() {
+        if (driver != null) {
+            logger.info("Found open web app driver");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This function helps to determine if mobile app driver is in opened or closed
+     * state
+     * and conclude if an action needs to be performed o discarded
+     *
+     * @return boolean value - true if found mobile app driver to be active
+     */
+    public static boolean isMobileDriverOpen() {
+        if (mobileDriver != null) {
+            logger.info("Found open mobile app driver");
+            return true;
+        }
+        return false;
+    }
+
     /**
      * This function passes application url in opened browser window
      * and implicitly wait for page to load
@@ -152,7 +381,7 @@ public class TestBase {
      * @return boolean value
      */
     public static boolean isWeb() {
-        if (driver != null) {
+        if (isWebDriverOpen()) {
             return true;
         } else {
             logger.info("No web app open session found!");
@@ -166,7 +395,7 @@ public class TestBase {
      * @return boolean value
      */
     public static boolean isMobile() {
-        if (mobileDriver != null) {
+        if (isMobileDriverOpen()) {
             return true;
         } else {
             logger.info("No mobile app open session found!");
@@ -179,7 +408,7 @@ public class TestBase {
      * Given that driver value isn't null
      */
     public static void closeCurrentSession() {
-        if (driver != null) {
+        if (isWebDriverOpen()) {
             driver.close();
         } else {
             logger.info("No web app open session found!");
@@ -191,11 +420,11 @@ public class TestBase {
      * Given that driver value isn't null
      */
     public static void closeActiveSessions() {
-        if (driver != null) {
+        if (isWebDriverOpen()) {
             driver.manage().deleteAllCookies();
             driver.quit();
         } else {
-            logger.info("No open session found!");
+            logger.info("No web app open session found!");
         }
     }
 
@@ -204,10 +433,10 @@ public class TestBase {
      * Given that driver value isn't null
      */
     public static void openCurrentBrowserInstance() {
-        if (driver != null) {
+        if (isWebDriverOpen()) {
             driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "n");
         } else {
-            logger.info("No open session found!");
+            logger.info("No web app open session found!");
         }
     }
 
@@ -216,13 +445,28 @@ public class TestBase {
      * Given that driver value isn't null
      */
     public static void openNewBrowserTab() {
-        if (driver != null) {
+        if (isWebDriverOpen()) {
             driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "t");
         } else {
-            logger.info("No open session found!");
+            logger.info("No web app open session found!");
         }
     }
 
+    /**
+     * This function sets browser activity logs into centralised logger controller
+     * and could be utilised in analysing failures
+     * <p>
+     *
+     * @return LogEntries as a list
+     */
+    public static LogEntries setLogger() {
+        if (isWebDriverOpen()) {
+            return driver.manage().logs().get(LogType.BROWSER);
+        } else {
+            logger.info("No web app open session found!");
+        }
+        return null;
+    }
 
     /**
      * This function puts execution at sleep for specified halt time
@@ -279,15 +523,25 @@ public class TestBase {
     }
 
     public static void waitForTextToBePresentInElement(long timeout, WebElement element, String text) {
-        new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.textToBePresentInElement(element, text));
+        new WebDriverWait(driver, Duration.ofSeconds(timeout))
+                .until(ExpectedConditions.textToBePresentInElement(element, text));
     }
 
-    public static void waitForPageTitle(long timeout, String pageTitle) {
-        new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.titleIs(pageTitle));
+    public static boolean waitForPageTitle(long timeout, String pageTitle) {
+        boolean pageTitleStatus = false;
+        try {
+            if (new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.titleIs(pageTitle))) {
+                pageTitleStatus = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pageTitleStatus;
     }
 
     public static void frameToBeAvailableAndSwitch(long timeout, String frameID) {
-        new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id(frameID)));
+        new WebDriverWait(driver, Duration.ofSeconds(timeout))
+                .until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id(frameID)));
     }
 
     public static void scrollToBottom() {
@@ -338,7 +592,8 @@ public class TestBase {
         actions = new Actions(driver);
         Rectangle start = fromElement.getRect();
         Rectangle finish = toElement.getRect();
-        actions.dragAndDropBy(fromElement, finish.getX() - start.getX(), finish.getY() - start.getY()).build().perform();
+        actions.dragAndDropBy(fromElement, finish.getX() - start.getX(), finish.getY() - start.getY()).build()
+                .perform();
     }
 
     public static void pressEnterKey() {
@@ -457,6 +712,49 @@ public class TestBase {
                     .filter(field -> field.isAnnotationPresent(ElementMeta.class) &&
                             !field.isAnnotationPresent(MobileSpecificField.class))
                     .collect(Collectors.toList());
+        }
+    }
+
+    // Getter method for returning the AndroidDriver instance
+    public static AndroidDriver getAndroidDriver() {
+        return androidDriver; // Returns the current instance of the AndroidDriver
+    }
+
+    // Method to wait for an element to be visible on the screen
+    public static void waitForElementToBeVisible(long timeout, WebElement element) {
+        try {
+            // Wait until the element becomes visible or the timeout is reached
+            (new WebDriverWait(androidDriver, Duration.ofSeconds(timeout)))
+                    .until(ExpectedConditions.visibilityOf(element));
+        } catch (Exception e) {
+            // If the element is not visible within the specified timeout, throw a
+            // RuntimeException
+            throw new RuntimeException(e.toString());
+        }
+    }
+
+    // Method to wait for an element to disappear from the screen
+    public static void waitForAndElementDisappear(long timeout, WebElement element) {
+        try {
+            // Wait until the element becomes invisible or the timeout is reached
+            (new WebDriverWait(androidDriver, Duration.ofSeconds(timeout)))
+                    .until(ExpectedConditions.invisibilityOf(element));
+        } catch (Exception e) {
+            // If the element is still visible after the timeout, throw a RuntimeException
+            throw new RuntimeException(e.toString());
+        }
+    }
+
+    // Method to wait for an element to be clickable
+    public static void waitForAndElementToBeClickable(long timeout, WebElement element) {
+        try {
+            // Wait until the element becomes clickable or the timeout is reached
+            (new WebDriverWait(androidDriver, Duration.ofSeconds(timeout)))
+                    .until(ExpectedConditions.elementToBeClickable(element));
+        } catch (Exception e) {
+            // If the element is not clickable within the specified timeout, throw a
+            // RuntimeException
+            throw new RuntimeException(e.toString());
         }
     }
 }
