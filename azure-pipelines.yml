@@ -2,14 +2,14 @@ trigger:
   - 1.0.0
 
 pool:
-  vmImage: macOS-latest
+  vmImage: 'macOS-latest'
 
 steps:
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: '18'
       jdkArchitectureOption: 'x64'
-      jdkSourceOption: 'Temurin'  # ✅ This avoids needing a file path
+      jdkSourceOption: 'Temurin'  # ✅ Use Temurin to avoid Azure Storage issues
 
   - task: Maven@3
     inputs:
