@@ -14,7 +14,7 @@ steps:
     inputs:
       versionSpec: '18'
       jdkArchitectureOption: 'X86'
-      jdkSourceOption: 'Temurin'
+      jdkSourceOption: 'AzureStorage'
 
   - task: Maven@3
     inputs:
