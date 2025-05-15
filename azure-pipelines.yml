@@ -14,7 +14,7 @@ steps:
     inputs:
       versionSpec: '18'
       jdkArchitectureOption: 'X86'
-      jdkSourceOption: 'MicrosoftBuildOfOpenJDK'
+      jdkSourceOption: 'Temurin'
 
   - task: Maven@3
     inputs:
