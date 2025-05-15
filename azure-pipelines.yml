@@ -1,21 +1,10 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-  - 1.0.0
+  - master
 
 pool:
-  vmImage: macOS-latest
+  vmImage: 'macOS-latest'
 
 steps:
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: '18'
-      jdkArchitectureOption: 'X86'
-      jdkSourceOption: 'PreInstalled'
-
   - task: Maven@3
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
@@ -23,8 +12,8 @@ steps:
       goals: 'clean package'
       publishJUnitResults: false
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '18'
-      jdkArchitectureOption: 'X86'
+      jdkVersionOption: '1.17'
+      jdkArchitectureOption: 'x64'
       mavenVersionOption: 'Default'
       mavenAuthenticateFeed: false
       effectivePomSkip: false
