@@ -2,15 +2,9 @@ trigger:
   - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ''macOS-latest'
 
 steps:
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: '18'
-      jdkArchitectureOption: 'x64'
-      jdkSourceOption: 'Temurin'  # ✅ Use Temurin to avoid Azure Storage issues
-
   - task: Maven@3
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
@@ -18,7 +12,7 @@ steps:
       goals: 'clean package'
       publishJUnitResults: false
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '18'
+      jdkVersionOption: '1.11'
       jdkArchitectureOption: 'x64'
       mavenVersionOption: 'Default'
       mavenAuthenticateFeed: false
