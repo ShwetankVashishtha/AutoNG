@@ -1,5 +1,5 @@
 trigger:
-  - 1.0.0
+  - master
 
 pool:
   vmImage: 'macOS-latest'
